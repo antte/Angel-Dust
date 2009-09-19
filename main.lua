@@ -1,13 +1,17 @@
 love.filesystem.include("angel.lua");
 love.filesystem.include("landscape.lua");
 love.filesystem.include("item.lua");
+love.filesystem.include("debug.lua");
+
+debugtext = "ehehe"
 
 function load()
-
+	
+	debugLoad();
 	landscapeLoad();
 	angelLoad();
 	itemLoad();
-
+	
 end
 
 function update(dt)
@@ -19,6 +23,7 @@ end
 
 function draw()
 
+	debugDraw();
 	landscapeDraw();
 	angelDraw();
 	itemDraw();
