@@ -14,7 +14,8 @@ function landscapeCreateHouse(houseTable, x, w, h, gh)
 	
 	house = love.physics.newBody(world_layer0, 0, 0, 0) 
 	house_shape = love.physics.newRectangleShape(house, x, love.graphics.getHeight() - (h/2) - (gh/2), w, h)
-	
+	house_shape:setData("house");
+
 	table.insert (houseTable, house_shape)
 	
 end
@@ -34,7 +35,8 @@ function landscapeLoad ()
 	--Create ground
 	ground = love.physics.newBody(world_layer0, 0, 0, 0) --world, x, y, mass
 	ground_shape = love.physics.newRectangleShape(ground, 400, 600, 800, groundHeight) -- x, y, w, h
-	
+	ground_shape:setData("ground");
+
 	--Create house
 	landscapeCreateHouse(landscapeHouses, 700, 233, 377, groundHeight)
 	landscapeCreateHouse(landscapeHouses, 100, 233, 377, groundHeight)
