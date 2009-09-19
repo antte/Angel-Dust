@@ -1,5 +1,5 @@
 -- Sprint 1
--- Story "Basic Character Movement"
+-- Story "Basic Character Movement" and "Basic Character Action: Lift Stuff"
 -- Created by Chux
 
 function angelLoad()
