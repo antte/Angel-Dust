@@ -29,7 +29,7 @@ function landscapeLoad ()
 	
 	--Create newWorld(w,h)
 	world_layer0 = love.physics.newWorld(2000,2000)
-	world_layer0:setGravity(0, 50)
+	world_layer0:setGravity(0, 100)
 	
 	--Create ground
 	ground = love.physics.newBody(world_layer0, 0, 0, 0) --world, x, y, mass
@@ -37,7 +37,6 @@ function landscapeLoad ()
 	
 	--Create house
 	landscapeCreateHouse(landscapeHouses, 700, 233, 377, groundHeight)
-	landscapeCreateHouse(landscapeHouses, 400, 233, 377, groundHeight)
 	landscapeCreateHouse(landscapeHouses, 100, 233, 377, groundHeight)
 	
 	
