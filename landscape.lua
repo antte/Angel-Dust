@@ -12,7 +12,7 @@ function landscapeCreateHouse(houseTable, x, w, h, gh)
 	Output: push the new house to the houseArray  
 	]]--
 	
-	house = love.physics.newBody(world_layer0, 0, 0, 1000000) --mass ska vara? vill egentligen göra "static" men vet inte hur
+	house = love.physics.newBody(world_layer0, 0, 0, 0) 
 	house_shape = love.physics.newRectangleShape(house, x, love.graphics.getHeight() - (h/2) - (gh/2), w, h)
 	
 	table.insert (houseTable, house_shape)
