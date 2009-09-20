@@ -2,8 +2,9 @@ love.filesystem.include("angel.lua");
 love.filesystem.include("landscape.lua");
 love.filesystem.include("item.lua");
 love.filesystem.include("debug.lua");
+love.filesystem.include("collision.lua");
 
-debugtext = "ehehe"
+debugtext = "!debugtext!"
 
 function load()
 	
@@ -12,7 +13,8 @@ function load()
 	angelLoad();
 	itemLoad();
 	createTestItems();
-
+	collisionLoad();
+	
 end
 
 function update(dt)
@@ -29,4 +31,10 @@ function draw()
 	angelDraw();
 	itemDraw();
 
+end
+
+function collision( a, b, c)
+	
+	
+	
 end
