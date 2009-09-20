@@ -6,7 +6,7 @@ function createBox(x, y, width, height)
 
 	boxBody = love.physics.newBody( world_layer0, x, y );
 	boxShape = love.physics.newRectangleShape(boxBody, width, height)
-	boxShape:setData(#itemsShape-1);
+	boxShape:setData(#itemsShape+1);
 	boxBody:setMassFromShapes();
 	
 	table.insert (itemsShape, boxShape);
