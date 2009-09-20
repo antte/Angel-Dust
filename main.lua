@@ -11,7 +11,8 @@ function load()
 	landscapeLoad();
 	angelLoad();
 	itemLoad();
-	
+	createTestItems();
+
 end
 
 function update(dt)
