@@ -32,3 +32,9 @@ function draw()
 	itemDraw();
 
 end
+
+function collision(a,b,c)
+
+	angelCollision(a,b,c);
+
+end

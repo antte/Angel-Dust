@@ -72,7 +72,7 @@ function angelUpdate(dt_angel)
 
 end
 
-function collision(a, b, c) 
+function angelCollision(a, b, c) 
 	
 	if a == "character" then
 		-- set lastItem to the data of "b", the key for the specific shape in the itemsShape table.
