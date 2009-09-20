@@ -32,9 +32,3 @@ function draw()
 	itemDraw();
 
 end
-
-function collision( a, b, c)
-	
-	
-	
-end
