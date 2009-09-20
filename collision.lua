@@ -14,6 +14,6 @@ function checkVelocity(c)
 	]]--
 	
 	local vx, vy = c:getVelocity()
-	debugtext = "Velocity: " .. vx .. "," .. vy .. "\n" 
+	debugMsg("Velocity: " .. vx .. "," .. vy)
 	
 end

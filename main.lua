@@ -4,8 +4,6 @@ love.filesystem.include("item.lua");
 love.filesystem.include("debug.lua");
 love.filesystem.include("collision.lua");
 
-debugtext = "!debugtext!"
-
 function load()
 	
 	debugLoad();

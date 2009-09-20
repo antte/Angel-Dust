@@ -47,7 +47,9 @@ function angelUpdate(dt_angel)
 			if love.timer.getTime()-lastItemTime<0.5 then
 			
 				local id = lastItem;
-		
+	
+				debugMsg("Character grabbed item " .. id);
+
 				-- Can't really explain this... Should be commented
 				cx, cy = characterBody:getWorldCenter()
 				ix, iy = itemsBody[id]:getWorldCenter() 
@@ -65,6 +67,7 @@ function angelUpdate(dt_angel)
 	-- Dropping stuff
 	if love.keyboard.isDown(love.key_d) then
 		if distancejoint ~= nil then
+			debugMsg("Character released item");
 			distancejoint:destroy()
 			distancejoint=nil
 		end
@@ -77,7 +80,7 @@ function angelCollision(a, b, c)
 	if a == "character" then
 		-- set lastItem to the data of "b", the key for the specific shape in the itemsShape table.
 		
-		debugtext = b  
+		debugMsg("Character collided with item "..b);
 		lastItem = b
 		lastItemTime = love.timer.getTime()
 	end
