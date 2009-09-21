@@ -1,5 +1,7 @@
 -- Sprint 1
--- Story "Basic Character Movement" and "Basic Character Action: Lift Stuff"
+-- Story "Basic Character Movement" 
+-- and "Basic Character Action: Lift Stuff"
+-- and "Game: Damage / Health"
 -- Created by Chux
 
 function angelLoad()
@@ -11,6 +13,10 @@ function angelLoad()
 	characterShape:setData("character");
 	characterBody:setMassFromShapes( );
 	characterBody:setAngularDamping(10000)
+
+	-- Character variables
+	characterMaxHitpoints = 100;
+	characterHitpoints = 100;
 
 	world_layer0:setCallback(collision);
 
@@ -27,50 +33,81 @@ end
 -- This is where the player input "happends"
 function angelUpdate(dt_angel)
 
-	-- Walking right and left
-	if love.keyboard.isDown(love.key_right) then
-		characterBody:applyImpulse( 800, 0)
-	elseif love.keyboard.isDown(love.key_left) then
-		characterBody:applyImpulse( -800, 0)
-	end
+	-- character still "alive"
+	if characterHitpoints > 0 then
 
-	-- Flying
-	if love.keyboard.isDown(love.key_up) then
-		characterBody:applyImpulse( 0, -3000)
-	end
-
-	-- Picking stuff up
-	if love.keyboard.isDown(love.key_space) then
-		
-		if distancejoint==nil and lastItem ~= nil then
-			
-			if love.timer.getTime()-lastItemTime<0.5 then
-			
-				local id = lastItem;
+		-- Walking right and left
+		if love.keyboard.isDown(love.key_right) then
+			characterBody:applyImpulse( 800, 0)
+		elseif love.keyboard.isDown(love.key_left) then
+			characterBody:applyImpulse( -800, 0)
+		end
 	
-				debugMsg("Character grabbed item " .. id);
+		-- Flying
+		if love.keyboard.isDown(love.key_up) then
+			characterBody:applyImpulse( 0, -3000)
+		end
 
-				-- Can't really explain this... Should be commented
-				cx, cy = characterBody:getWorldCenter()
-				ix, iy = itemsBody[id]:getWorldCenter() 
-
-				distancejoint = love.physics.newDistanceJoint(characterBody, itemsBody[id], cx, cy, ix, iy)	
-				
-				distancejoint:setLength(25);	
+		-- Picking stuff up
+		if love.keyboard.isDown(love.key_space) then
 			
+			if distancejoint==nil and lastItem ~= nil then
+				
+				if love.timer.getTime()-lastItemTime<0.5 then
+			
+					local id = lastItem;
+	
+					debugMsg("Character grabbed item " .. id);
+
+					-- Can't really explain this... Should be commented
+					cx, cy = characterBody:getWorldCenter()
+					ix, iy = itemsBody[id]:getWorldCenter() 
+	
+					distancejoint = love.physics.newDistanceJoint(characterBody, itemsBody[id], cx, cy, ix, iy)	
+				
+					distancejoint:setLength(25);	
+			
+				end
+		
 			end
 		
 		end
-	
+
+		-- Dropping stuff
+		if love.keyboard.isDown(love.key_d) then
+
+			if distancejoint ~= nil then
+
+				debugMsg("Character released item");
+				distancejoint:destroy()
+				distancejoint=nil
+
+			end
+		end
+	else 
+		debugMsg("Character is dead");
+		----
+		-- Character is "dead"
+		----
+		-- It should'nt really be destroyed right? Now it's just imobolized
+		--characterBody:destroy();
+		--characterShape:destroy();
 	end
 
-	-- Dropping stuff
-	if love.keyboard.isDown(love.key_d) then
-		if distancejoint ~= nil then
-			debugMsg("Character released item");
-			distancejoint:destroy()
-			distancejoint=nil
-		end
+end
+
+function angelReceiveDmg(dmg) 
+
+	characterHitpoints = characterHitpoints - dmg;
+
+end
+
+function angelRegainHp(hp)
+
+	characterHitpoints = characterHitpoints + hp;
+	
+	if characterHitpoints > characterMaxHitpoints then
+		characterHitpoints = characterMaxHitpoints;
 	end
 
 end
