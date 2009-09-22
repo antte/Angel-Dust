@@ -2,6 +2,8 @@
 -- Story "Basic Character Movement" 
 -- and "Basic Character Action: Lift Stuff"
 -- and "Game: Damage / Health"
+-- and "Flap(improved flying)"
+-- and "Stamina"
 -- Created by Chux
 
 function angelLoad()
@@ -17,6 +19,14 @@ function angelLoad()
 	-- Character variables
 	characterMaxHitpoints = 100;
 	characterHitpoints = 100;
+	characterStamina = 100;
+	characterMaxStamina = 100;
+	characterFlapped = false; -- Ugly...
+
+	-- Values that should be tweaked
+	characterFlapPower = 30000; -- How much force a flap gives
+	characterFlapStamina = 8; -- How much stamina a flap "cost"
+	characterStaminaGain = 30; -- How much stamina is regained per second
 
 	world_layer0:setCallback(collision);
 
@@ -43,9 +53,35 @@ function angelUpdate(dt_angel)
 			characterBody:applyImpulse( -800, 0)
 		end
 	
-		-- Flying
+		-- Flying, with stamina
 		if love.keyboard.isDown(love.key_up) then
-			characterBody:applyImpulse( 0, -3000)
+		
+			if characterFlapped == false then	
+
+				characterFlapped = true;
+
+				debugMsg("Flap!");
+
+				if characterStamina >= characterFlapStamina then			
+
+					characterBody:applyImpulse( 0, -characterFlapPower)
+					characterStamina = characterStamina - characterFlapStamina;				
+
+				else
+					debugMsg("Not enough stamina (got "..characterStamina.." need "..characterFlapStamina);
+	
+				end
+			end
+		else
+
+			characterFlapped = false;
+
+			if characterStamina < characterMaxStamina then
+	
+				characterStamina = characterStamina + characterStaminaGain * dt_angel;
+			
+			end		
+
 		end
 
 		-- Picking stuff up
