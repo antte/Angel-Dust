@@ -12,40 +12,34 @@ function createBox(x, y, width, height, hp)
 
 	boxBody = love.physics.newBody( world_layer0, x, y );
 	boxShape = love.physics.newRectangleShape(boxBody, width, height)
-	boxShape:setData(#itemsShape+1);
 	boxBody:setMassFromShapes();
-	
-	table.insert (itemsShape, boxShape);
-	table.insert (itemsBody, boxBody);
-	table.insert (itemsHitpoints, hp);	
+
+	addEntity(boxBody,boxShape,"item");
+	boxId = idOfLastCreatedEntity();	
+	boxShape:setData(boxId);
+	table.insert (itemsHitpoints, boxId, hp);	
 
 end
 
 function itemLoad()
 
-	itemsBody = {};
-	itemsShape = {};
 	itemsHitpoints = {};
 
 end
 
 
-function itemDraw() 
-
-	for i = 1, #itemsShape, 1 do
+function itemDraw(i) 
 	
-		-- Can't draw an item that has been destroyed(which it should have been if hitpoints drop below 1
-		if itemsHitpoints[i] then	
+	-- Can't draw an item that has been destroyed(which it should have been if hitpoints drop below 1
+	if itemsHitpoints[i] then	
 			
-			-- Draws the "boxcolored filling" 
-			love.graphics.setColor( 180, 140, 100);
-			love.graphics.polygon(love.draw_fill, itemsShape[i]:getPoints())
+		-- Draws the "boxcolored filling" 
+		love.graphics.setColor( 180, 140, 100);
+		love.graphics.polygon(love.draw_fill, entityShape[i]:getPoints())
 
-			-- Draws a border for the "filling"
-			love.graphics.setColor( 0, 0, 0);
-			love.graphics.polygon(love.draw_line, itemsShape[i]:getPoints())
-
-		end
+		-- Draws a border for the "filling"
+		love.graphics.setColor( 0, 0, 0);
+		love.graphics.polygon(love.draw_line, entityShape[i]:getPoints())
 
 	end
 	
@@ -60,8 +54,8 @@ function itemReceiveDmg(itemId, dmg)
 
 		if itemsHitpoints[itemId] <= 0 then
 
-			itemsBody[itemId]:destroy();
-			itemsShape[itemId]:destroy();
+			entityBody[itemId]:destroy();
+			entityShape[itemId]:destroy();
 			debugMsg("Item "..itemId.." destroyed!");
 			
 			-- itemsHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
@@ -87,6 +81,14 @@ function createTestItems()  -- used for testing purposes only
 	while i<5 do
 		createBox(50+100*i,200-math.random(300),math.random(40)+5,math.random(40)+5,50);
 		i=i+1;
+	end
+
+end
+
+function itemCollision(a,b,c)
+	
+	if checkVelocity(c) > 150 then
+		debugMsg("Hard collision between "..a.." & "..b);
 	end
 
 end

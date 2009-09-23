@@ -1,6 +1,8 @@
 --Sprint 1: Collition detection w/ velocity check
 --author: antte
 --två objekt möts, trace:a med vilken kraft de slår mot varandra
+-- "Collision Damage"
+-- edits by: Chux 
 
 function collisionLoad()
 	
@@ -14,6 +16,12 @@ function checkVelocity(c)
 	]]--
 	
 	local vx, vy = c:getVelocity()
-	debugMsg("Velocity: " .. vx .. "," .. vy)
+	--debugMsg("Velocity: " .. vx .. "," .. vy)
 	
+	-- Maybe the highest velocity should be returned or something? This'll work for now
+	if vy<0 then
+		vy = -vy;
+	end
+
+	return vy;	
 end

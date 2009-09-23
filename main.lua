@@ -3,9 +3,11 @@ love.filesystem.include("landscape.lua");
 love.filesystem.include("item.lua");
 love.filesystem.include("debug.lua");
 love.filesystem.include("collision.lua");
+love.filesystem.include("entity.lua");
 
 function load()
 	
+	entityLoad();
 	debugLoad();
 	landscapeLoad();
 	angelLoad();
@@ -27,12 +29,14 @@ function draw()
 	debugDraw();
 	landscapeDraw();
 	angelDraw();
-	itemDraw();
+	entityDraw();
+	--itemDraw(); is now in entity
 
 end
 
 function collision(a,b,c)
 
 	angelCollision(a,b,c);
+	itemCollision(a,b,c);
 
 end

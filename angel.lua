@@ -60,8 +60,6 @@ function angelUpdate(dt_angel)
 
 				characterFlapped = true;
 
-				debugMsg("Flap!");
-
 				if characterStamina >= characterFlapStamina then			
 
 					characterBody:applyImpulse( 0, -characterFlapPower)
@@ -97,9 +95,9 @@ function angelUpdate(dt_angel)
 
 					-- Can't really explain this... Should be commented
 					cx, cy = characterBody:getWorldCenter()
-					ix, iy = itemsBody[id]:getWorldCenter() 
+					ix, iy = entityBody[id]:getWorldCenter() 
 	
-					distancejoint = love.physics.newDistanceJoint(characterBody, itemsBody[id], cx, cy, ix, iy)	
+					distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx, cy, ix, iy)	
 				
 					distancejoint:setLength(25);	
 			
@@ -153,9 +151,11 @@ function angelCollision(a, b, c)
 	if a == "character" then
 		-- set lastItem to the data of "b", the key for the specific shape in the itemsShape table.
 		
-		debugMsg("Character collided with item "..b);
+		--debugMsg("Character collided with item "..b);
 		lastItem = b
 		lastItemTime = love.timer.getTime()
+
+		checkVelocity(c);
 	end
 
 end
