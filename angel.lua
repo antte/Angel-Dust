@@ -59,9 +59,9 @@ function angelUpdate(dt_angel)
 			if characterFlapped == false then	
 
 				characterFlapped = true;
-
+				
 				if characterStamina >= characterFlapStamina then			
-
+					debugMsg(characterStamina);
 					characterBody:applyImpulse( 0, -characterFlapPower)
 					characterStamina = characterStamina - characterFlapStamina;				
 

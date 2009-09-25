@@ -88,7 +88,7 @@ end
 function itemCollision(a,b,c)
 	
 	if checkVelocity(c) > 150 then
-		debugMsg("Hard collision between "..a.." & "..b);
+		--debugMsg("Hard collision between "..a.." & "..b);
 	end
 
 end
