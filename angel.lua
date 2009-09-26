@@ -7,6 +7,7 @@
 -- Created by Chux
 
 function angelLoad()
+
 	-- Should "world" be an argument in the function?
 
 	-- Create box2d shape and body for the character
@@ -21,12 +22,18 @@ function angelLoad()
 	characterHitpoints = 100;
 	characterStamina = 100;
 	characterMaxStamina = 100;
-	characterFlapped = false; -- Ugly...
+	characterItemBeingHold = false; -- False if no item, number of the entity if in fact holding one.
+
+	-- Toggles to make an action not repeat over updates. 
+	characterFlapped = false; -- Ugly..
+	characterItemPickup = false;
 
 	-- Values that should be tweaked
 	characterFlapPower = 30000; -- How much force a flap gives
 	characterFlapStamina = 8; -- How much stamina a flap "cost"
 	characterStaminaGain = 30; -- How much stamina is regained per second
+	characterGrabTime = 0.5; -- How soon after contact a "grab" must be initiated to suceed
+
 
 	world_layer0:setCallback(collision);
 
@@ -61,7 +68,7 @@ function angelUpdate(dt_angel)
 				characterFlapped = true;
 				
 				if characterStamina >= characterFlapStamina then			
-					debugMsg(characterStamina);
+
 					characterBody:applyImpulse( 0, -characterFlapPower)
 					characterStamina = characterStamina - characterFlapStamina;				
 
@@ -84,40 +91,31 @@ function angelUpdate(dt_angel)
 
 		-- Picking stuff up
 		if love.keyboard.isDown(love.key_space) then
-			
-			if distancejoint==nil and lastItem ~= nil then
-				
-				if love.timer.getTime()-lastItemTime<0.5 then
-			
-					local id = lastItem;
-					grabbedItem=getEntityBody(id);					
 	
-					debugMsg("Character grabbed item " .. id);
+			if characterItemPickup==false then
+				
+				if characterItemBeingHold == false then -- If an item is NOT being hold...
+		
+					if distancejoint==nil and lastItem ~= nil then
+				
+						if love.timer.getTime()-lastItemTime < characterGrabTime then
+				
+							local id = lastItem;
+							characterGrabItem(id);
+		
+						end
+		
+					end
+				else
 
-					-- Can't really explain this... Should be commented
-					cx, cy = characterBody:getWorldCenter()
-					ix, iy = grabbedItem:getWorldCenter() 
-	
-					distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx, cy, ix, iy)	
-				
-					distancejoint:setLength(25);	
-			
+					characterReleaseItem();
+
 				end
-		
 			end
-		
-		end
+			characterItemPickup=true;
 
-		-- Dropping stuff
-		if love.keyboard.isDown(love.key_d) then
-
-			if distancejoint ~= nil then
-
-				debugMsg("Character released item");
-				distancejoint:destroy()
-				distancejoint=nil
-
-			end
+		else
+			characterItemPickup=false;
 		end
 	else 
 		debugMsg("Character is dead");
@@ -131,6 +129,37 @@ function angelUpdate(dt_angel)
 
 end
 
+function characterReleaseItem()
+
+	if distancejoint ~= nil then
+		
+
+		grabbedItem=false;
+		characterItemBeingHold=false;
+		distancejoint:destroy()
+		distancejoint=nil;
+
+	end
+	
+end
+
+function characterGrabItem(id)
+
+	grabbedItem=getEntityBody(id);					
+	characterItemBeingHold=id;
+	
+	debugMsg("Character grabbed item " .. id);
+
+	-- Can't really explain this... Should be commented
+	cx, cy = characterBody:getWorldCenter()
+	ix, iy = grabbedItem:getWorldCenter() 
+	
+	distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx, cy, ix, iy)	
+				
+	distancejoint:setLength(25);				
+
+end
+ 
 function angelReceiveDmg(dmg) 
 
 	characterHitpoints = characterHitpoints - dmg;

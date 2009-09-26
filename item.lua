@@ -61,6 +61,12 @@ function itemReceiveDmg(itemId, dmg)
 			entityBody[itemId]:setY(9999);
 
 			debugMsg("Item "..itemId.." destroyed!");
+
+			if characterItemBeingHold == itemId then
+
+				characterReleaseItem();
+
+			end
 			
 			-- itemsHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
 			itemsHitpoints[itemId] = false;
@@ -83,7 +89,7 @@ function createTestItems()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
 	while i<5 do
-		createBox(50+100*i,200-math.random(300),math.random(40)+5,math.random(40)+5,500);
+		createBox(50+100*i,200-math.random(300),math.random(40)+5,math.random(40)+5,5000);
 		i=i+1;
 	end
 
@@ -95,12 +101,12 @@ function itemCollision(a,b,c)
 
 	-- If a is actually a number - and so an entity
 	if tonumber(a) ~= nil then
+
 		a = tonumber(a);
 		power = math.floor(((entityBody[a]:getMass()/2) * v)/1000)
 		if power >= 9 then	
-			itemReceiveDmg(a,power);
 
-			debugMsg(a.."&"..b.." a received dmg");
+			itemReceiveDmg(a,power);
 
 		end
 	end
