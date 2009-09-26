@@ -34,12 +34,12 @@ function landscapeLoad ()
 	
 	--Create ground
 	ground = love.physics.newBody(world_layer0, 0, 0, 0) --world, x, y, mass
-	ground_shape = love.physics.newRectangleShape(ground, 400, 600, 800, groundHeight) -- x, y, w, h
+	ground_shape = love.physics.newRectangleShape(ground, 1024/2, 768, 1024, groundHeight) -- x, y, w, h
 	ground_shape:setData("ground");
 
 	--Create house
-	landscapeCreateHouse(landscapeHouses, 700, 233, 377, groundHeight)
-	landscapeCreateHouse(landscapeHouses, 100, 233, 377, groundHeight)
+	landscapeCreateHouse(landscapeHouses, 900, 233, 377, groundHeight)
+	landscapeCreateHouse(landscapeHouses, 130, 233, 377, groundHeight)
 	
 	
 end
