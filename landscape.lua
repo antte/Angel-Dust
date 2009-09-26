@@ -24,7 +24,7 @@ end
 
 function landscapeLoad ()
 	
-	groundHeight = 20
+	groundHeight = 50
 	
 	landscapeHouses = {}
 	
@@ -54,10 +54,10 @@ end
 
 function landscapeDraw()
 	
-	love.graphics.setBackgroundColor(215, 215, 255)
+	love.graphics.setBackgroundColor(174,202,226)
 	
 	--Draws the ground
-	love.graphics.setColor( 50, 150, 50)
+	love.graphics.setColor( 96, 119, 39)
 	love.graphics.polygon(love.draw_fill, ground_shape:getPoints())
 	
 	--Draws the house
