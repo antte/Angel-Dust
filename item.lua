@@ -54,8 +54,12 @@ function itemReceiveDmg(itemId, dmg)
 
 		if itemsHitpoints[itemId] <= 0 then
 
-			entityBody[itemId]:destroy();
-			entityShape[itemId]:destroy();
+--			entityBody[itemId]:destroy();
+--			entityShape[itemId]:destroy();
+			entityType[itemId]="destroyed";
+			entityBody[itemId]:setX(9999);
+			entityBody[itemId]:setY(9999);
+
 			debugMsg("Item "..itemId.." destroyed!");
 			
 			-- itemsHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
@@ -76,19 +80,42 @@ end
 
 
 function createTestItems()  -- used for testing purposes only
-
+	math.randomseed(os.time());	
 	local i=0;
 	while i<5 do
-		createBox(50+100*i,200-math.random(300),math.random(40)+5,math.random(40)+5,50);
+		createBox(50+100*i,200-math.random(300),math.random(40)+5,math.random(40)+5,500);
 		i=i+1;
 	end
 
 end
 
 function itemCollision(a,b,c)
-	
-	if checkVelocity(c) > 150 then
-		debugMsg("Hard collision between "..a.." & "..b);
+
+	v = checkVelocity(c);
+
+	-- If a is actually a number - and so an entity
+	if tonumber(a) ~= nil then
+		a = tonumber(a);
+		power = math.floor(((entityBody[a]:getMass()/2) * v)/1000)
+		if power >= 9 then	
+			itemReceiveDmg(a,power);
+
+			debugMsg(a.."&"..b.." a received dmg");
+
+		end
 	end
+
+	-- if b is actually a number - and so an entity
+--[[	if tonumber(b) ~= nil then
+		b = tonumber(b);
+		power = math.floor(((entityBody[b]:getMass()/2) * v)/100000)
+		if power >= 9 then
+			itemReceiveDmg(b,power);
+
+			debugMsg(a.."&"..b.." b received dmg");
+		end	
+
+	end
+]]--
 
 end

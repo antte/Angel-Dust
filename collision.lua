@@ -25,3 +25,38 @@ function checkVelocity(c)
 
 	return vy;	
 end
+
+function collision(a,b,c)
+
+	if isEntity(a) then
+
+		aType = getEntityType(a);
+		if aType=="item" then
+
+			itemCollision(a,b,c)
+
+		end
+
+	elseif a == "character" then	
+	
+		angelCollision(a,b,c);
+
+	end
+
+	if isEntity(b) then
+		bType = getEntityType(b);
+		if bType=="item" then
+
+			itemCollision(b,a,c)
+
+		end
+
+
+	elseif b == "character" then
+
+		angelCollision(b,a,c);
+
+	end
+
+
+end

@@ -21,9 +21,19 @@ function entityDraw()
 end
 
 -- This function returns which type a body is, by it's id
-function checkEntityType(id) 
+function getEntityType(id) 
 
 	return entityType[id];
+
+end
+
+function isEntity(name)
+
+	if tonumber(name) == nil then
+		return false;
+	else
+		return true;
+	end
 
 end
 
@@ -41,5 +51,12 @@ end
 function idOfLastCreatedEntity()
 	
 	return entityId;
+
+end
+
+function getEntityBody(id)
+
+	id = tonumber(id);
+	return entityBody[id];
 
 end

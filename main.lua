@@ -34,9 +34,4 @@ function draw()
 
 end
 
-function collision(a,b,c)
 
-	angelCollision(a,b,c);
-	itemCollision(a,b,c);
-
-end
