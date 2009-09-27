@@ -28,6 +28,38 @@ end
 
 function collision(a,b,c)
 
+	aType = getEntityType(a);
+	bType = getEntityType(b);
+
+
+	if isEntity(a) and isEntity(b) then
+		aType = getEntityType(a);
+		bType = getEntityType(b);
+
+		if (aType=="item" and bType=="npc") then
+
+			npcCollision(b,a,c);
+
+		elseif (aType=="npc" and bType=="item") then
+
+			npcCollision(a,b,c);
+
+		end
+
+	end
+
+	if aType=="npc" and bType == "house" then
+
+			npcCollision(a,b,c);
+
+	elseif aType=="house" and bType == "npc" then
+
+			npcCollision(b,a,c);
+
+	end
+
+
+
 	if isEntity(a) then
 
 		aType = getEntityType(a);
@@ -44,6 +76,7 @@ function collision(a,b,c)
 	end
 
 	if isEntity(b) then
+
 		bType = getEntityType(b);
 		if bType=="item" then
 
@@ -51,12 +84,10 @@ function collision(a,b,c)
 
 		end
 
-
 	elseif b == "character" then
 
 		angelCollision(b,a,c);
 
 	end
-
 
 end

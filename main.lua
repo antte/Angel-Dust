@@ -4,6 +4,7 @@ love.filesystem.include("item.lua");
 love.filesystem.include("debug.lua");
 love.filesystem.include("collision.lua");
 love.filesystem.include("entity.lua");
+love.filesystem.include("npc.lua");
 
 function load()
 	
@@ -11,8 +12,11 @@ function load()
 	debugLoad();
 	landscapeLoad();
 	angelLoad();
-	itemLoad();
-	createTestItems();
+	npcLoad();
+
+	createTestItems()
+	createTestNPC()
+
 	collisionLoad();
 	
 end
@@ -21,6 +25,7 @@ function update(dt)
 
 	landscapeUpdate(dt);
 	angelUpdate(dt);
+	npcUpdate(dt);
 	
 end
 
@@ -30,7 +35,6 @@ function draw()
 	landscapeDraw();
 	angelDraw();
 	entityDraw();
-	--itemDraw(); is now in entity
 
 end
 

@@ -1,12 +1,12 @@
 -- This is used to make distinction between the diffrent bodies in the "world"
 
-
 function entityLoad() 
 
 	entityId = 0
 	entityBody = {}
 	entityShape = {}
 	entityType = {}
+	entityHitpoints = {}
 
 end
 
@@ -15,15 +15,22 @@ function entityDraw()
 	for i=1, #entityShape, 1 do
 		if entityType[i]=="item" then
 			itemDraw(i);
-		end
+		elseif entityType[i]=="npc" then
+			npcDraw(i);
+		end	
 	end
 
 end
 
 -- This function returns which type a body is, by it's id
+-- if not an entity, return name of it anyway
 function getEntityType(id) 
 
-	return entityType[id];
+	if tonumber(id) then	
+		return entityType[id];
+	else
+		return id;
+	end
 
 end
 
@@ -37,12 +44,13 @@ function isEntity(name)
 
 end
 
-function addEntity(body,shape,inEntityType)
+function addEntity(body,shape,inEntityType, inHp)
 
 	entityId = entityId + 1;
 	table.insert( entityBody, body)
 	table.insert( entityShape, shape)
 	table.insert( entityType, inEntityType)
+	table.insert( entityHitpoints, inHp);
 	
 	return entityId;
 

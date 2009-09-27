@@ -181,10 +181,12 @@ function angelCollision(a, b, c)
 	if a == "character" then
 		-- set lastItem to the data of "b", the key for the specific shape in the itemsShape table.
 		if isEntity(b) then
-			if getEntityType(b) then	
+			if getEntityType(b)=="item" then	
 				lastItem = b
 				lastItemTime = love.timer.getTime()
 				checkVelocity(c);
+		--	elseif genEntityType(b)=="npc" then
+	--			debugMsg("npc nigger");
 			end
 		end
 
