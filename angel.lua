@@ -29,11 +29,11 @@ function angelLoad()
 	characterItemPickup = false;
 
 	-- Values that should be tweaked
-	characterFlapPower = 30000; -- How much force a flap gives
-	characterFlapStamina = 8; -- How much stamina a flap "cost"
-	characterStaminaGain = 30; -- How much stamina is regained per second
+	characterFlapPower = 25000; -- How much force a flap gives
+	characterFlapStamina = 9; -- How much stamina a flap "cost"
+	characterStaminaGain = 28; -- How much stamina is regained per second
 	characterGrabTime = 0.5; -- How soon after contact a "grab" must be initiated to suceed
-
+	characterGlide = 25000; -- How much "glide" you get. Higher value = more glide. 
 
 	world_layer0:setCallback(collision);
 
@@ -62,7 +62,7 @@ function angelUpdate(dt_angel)
 	
 		-- Flying, with stamina
 		if love.keyboard.isDown(love.key_up) then
-		
+			characterBody:applyForce(0,-characterGlide);		
 			if characterFlapped == false then	
 
 				characterFlapped = true;
