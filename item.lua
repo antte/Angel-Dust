@@ -113,7 +113,7 @@ end
 function createTestItems()  -- used for testing purposes only
 	createBox(100,300,15,15,5000,"crate");
 	createBox(150,300,35,11,5000,"sofa");
-	createBall(180,300,5,5000,"basketball");
+	createBall(180,300,4,5000,"basketball");
 
 
 end
