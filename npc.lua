@@ -4,6 +4,9 @@
 
 function npcLoad()
 
+	graphic_npcLeft = love.graphics.newImage("images/npcLeft.png", love.image_optimize);
+	graphic_npcRight = love.graphics.newImage("images/npcRight.png", love.image_optimize);
+
 	npcWalkingDirection = {}
 	npcWalkingWait = {}
 
@@ -57,7 +60,7 @@ end
 function createNPC(x, y, hp)
 
 	npcBody = love.physics.newBody( world_layer0, x, y);
-	npcShape = love.physics.newRectangleShape(npcBody, 15, 20)
+	npcShape = love.physics.newRectangleShape(npcBody, 12, 18)
 	npcBody:setMassFromShapes();
 	nx,ny=npcBody:getWorldPoint(10,10); -- The mass it gets is probably too much
 
@@ -78,22 +81,12 @@ function createNPC(x, y, hp)
 end
 
 function npcDraw(i) 
-	
-		-- Draws the "boxcolored filling"
-		if entityHitpoints[i] == false then
-			love.graphics.setColor( 200, 0, 0);
-		else 
-			love.graphics.setColor( 200, 200, 0);
-		end
-		
-		love.graphics.polygon(love.draw_fill, entityShape[i]:getPoints())
+	if npcWalkingDirection[i] == "left" then
+		love.graphics.draw(graphic_npcLeft, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
+	elseif npcWalkingDirection[i] == "right" then
 
-		-- Draws a border for the "filling"
-		love.graphics.setColor( 0, 0, 0);
-		love.graphics.polygon(love.draw_line, entityShape[i]:getPoints())
-
-		love.graphics.setColor( 0, 0, 0)
-		love.graphics.draw(i, entityBody[i]:getX(), entityBody[i]:getY());
+		love.graphics.draw(graphic_npcRight, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
+	end
 
 end
 
