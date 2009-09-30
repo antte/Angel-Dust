@@ -29,6 +29,7 @@ function angelLoad()
 	characterItemPickup = false;
 
 	-- Values that should be tweaked
+	characterWalkPower = 40000;
 	characterFlapPower = 25000; -- How much force a flap gives
 	characterFlapStamina = 9; -- How much stamina a flap "cost"
 	characterStaminaGain = 28; -- How much stamina is regained per second
@@ -48,16 +49,16 @@ function angelDraw()
 end
 
 -- This is where the player input "happends"
-function angelUpdate(dt_angel)
+function angelUpdate(dt)
 
 	-- character still "alive"
 	if characterHitpoints > 0 then
 
 		-- Walking right and left
 		if love.keyboard.isDown(love.key_right) then
-			characterBody:applyImpulse( 800, 0)
+			characterBody:applyImpulse( characterWalkPower*dt, 0)
 		elseif love.keyboard.isDown(love.key_left) then
-			characterBody:applyImpulse( -800, 0)
+			characterBody:applyImpulse( -characterWalkPower*dt, 0)
 		end
 	
 		-- Flying, with stamina
@@ -83,7 +84,7 @@ function angelUpdate(dt_angel)
 
 			if characterStamina < characterMaxStamina then
 	
-				characterStamina = characterStamina + characterStaminaGain * dt_angel;
+				characterStamina = characterStamina + characterStaminaGain * dt;
 			
 			end		
 
