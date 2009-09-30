@@ -8,7 +8,7 @@
 -- x and y sets position, 
 -- width and height the size of the item
 -- hp the "hitpoints"(health) it got
-function createBox(x, y, width, height, hp)
+function createBox(x, y, width, height, hp, graphic)
 
 	boxBody = love.physics.newBody( world_layer0, x, y );
 	boxShape = love.physics.newRectangleShape(boxBody, width, height)
@@ -20,6 +20,35 @@ function createBox(x, y, width, height, hp)
 	boxId = idOfLastCreatedEntity();	
 	boxShape:setData(boxId);
 
+	table.insert(itemGraphic, boxId, graphic);
+
+end
+
+function createBall(x, y, radius, hp, graphic)
+
+	ballBody = love.physics.newBody( world_layer0, x, y );
+	ballShape = love.physics.newCircleShape(ballBody, radius);
+	ballBody:setMassFromShapes();
+
+	ballShape:setRestitution(0.7);
+	
+	addEntity(ballBody,ballShape,"item", hp);
+	ballId = idOfLastCreatedEntity();	
+	ballShape:setData(ballId);
+
+	table.insert(itemGraphic, ballId, graphic);
+
+end
+
+
+function itemLoad()
+
+	graphic_itemSofa = love.graphics.newImage("images/itemSofa.png", love.image_optimize);
+	graphic_itemCrate = love.graphics.newImage("images/itemCrate1515.png", love.image_optimize);
+	graphic_itemBasketball = love.graphics.newImage("images/itemBasketball.png", love.image_optimize);
+
+	itemGraphic = {}
+
 end
 
 function itemDraw(i) 
@@ -27,17 +56,16 @@ function itemDraw(i)
 	-- Can't draw an item that has been destroyed(which it should have been if hitpoints drop below 1
 	if entityHitpoints[i] then	
 			
-		-- Draws the "boxcolored filling" 
-		love.graphics.setColor( 180, 140, 100);
-		love.graphics.polygon(love.draw_fill, entityShape[i]:getPoints())
+		if itemGraphic[i] == "crate" then
+			love.graphics.draw(graphic_itemCrate, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
+		end
+		if itemGraphic[i] == "sofa" then
+			love.graphics.draw(graphic_itemSofa, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
+		end	
+		if itemGraphic[i] == "basketball" then
+			love.graphics.draw(graphic_itemBasketball, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
+		end	
 
-		-- Draws a border for the "filling"
-		love.graphics.setColor( 0, 0, 0);
-		love.graphics.polygon(love.draw_line, entityShape[i]:getPoints())
-
-		love.graphics.setColor( 0, 0, 0)
-		love.graphics.draw(i, entityBody[i]:getX(), entityBody[i]:getY());
-		
 	end
 	
 end
@@ -83,12 +111,10 @@ end
 
 
 function createTestItems()  -- used for testing purposes only
-	math.randomseed(os.time());	
-	local i=0;
-	while i<5 do
-		createBox(50+40*i,300,math.random(30)+10,math.random(30)+10,5000);
-		i=i+1;
-	end
+	createBox(100,300,15,15,5000,"crate");
+	createBox(150,300,35,11,5000,"sofa");
+	createBall(180,300,5,5000,"basketball");
+
 
 end
 

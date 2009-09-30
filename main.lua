@@ -13,11 +13,14 @@ function load()
 	landscapeLoad();
 	angelLoad();
 	npcLoad();
+	itemLoad();
+
 
 	createTestItems()
 	createTestNPC()
 
 	collisionLoad();
+
 	
 end
 
