@@ -3,13 +3,13 @@ function splatLoad()
 	graphic_splat = love.graphics.newImage("images/splat.png");
 
 	psSplat= love.graphics.newParticleSystem(graphic_splat, 1000)
-	psSplat:setEmissionRate(40)
+	psSplat:setEmissionRate(60)
 	psSplat:setSpeed(40, 120)
 	psSplat:setGravity(50, 100)
-	psSplat:setSize(0.2, 1)
-	psSplat:setColor( love.graphics.newColor(255,0,0) )
-	psSplat:setLifetime(1)
-	psSplat:setParticleLife(2)
+	psSplat:setSize(0.4, 1)
+	psSplat:setColor( love.graphics.newColor(180,0,0,255), love.graphics.newColor(100,0,0,0))
+	psSplat:setLifetime(0.5)
+	psSplat:setParticleLife(1)
 	psSplat:setDirection(270)
 	psSplat:setSpread(50)
 	

@@ -5,19 +5,28 @@
 
 --<< Landscapespecific functions
 
-function landscapeCreateHouse(houseTable, x, w, h, gh)
+function landscapeCreateHouse(x, w, h, gh)
 	--[[Description:
 	Creates a simple house
 	Input: the array to fill the house with ,xpos, width, height, groundheight
 	Output: push the new house to the houseArray  
 	]]--
-	
+	--local y = love.graphics.getHeight() - (h/2) - (gh/2)
+
+	rooftop = love.physics.newBody(world_layer0, 0, 0, 0) 
+	rooftop_shape = love.physics.newRectangleShape(rooftop, x, love.graphics.getHeight() - (gh/2) - h, w, 1)
+	rooftop_shape:setData("platform");
+	-- This is for the "platform"-bit
+	rooftop_shape:setCategory(2);
+
 	house = love.physics.newBody(world_layer0, 0, 0, 0) 
 	house_shape = love.physics.newRectangleShape(house, x, love.graphics.getHeight() - (h/2) - (gh/2), w, h)
 	house_shape:setData("house");
+	house_shape:setCategory();
 
-	table.insert (houseTable, house_shape)
-	
+	table.insert (landscapeHouseRoof, rooftop_shape)
+	table.insert (landscapeHouse, house_shape)
+
 end
 
 --<< Callback functions
@@ -26,7 +35,8 @@ function landscapeLoad ()
 	
 	groundHeight = 50
 	
-	landscapeHouses = {}
+	landscapeHouseRoof = {}
+	landscapeHouse = {}
 	
 	--Create newWorld(w,h)
 	world_layer0 = love.physics.newWorld(2000,2000)
@@ -38,8 +48,8 @@ function landscapeLoad ()
 	ground_shape:setData("ground");
 
 	--Create house
-	landscapeCreateHouse(landscapeHouses, 900, 233, 377, groundHeight)
-	landscapeCreateHouse(landscapeHouses, 130, 233, 377, groundHeight)
+	landscapeCreateHouse(900, 200, 400, groundHeight)
+	landscapeCreateHouse(130, 200, 200, groundHeight)
 	
 	
 end
@@ -60,11 +70,11 @@ function landscapeDraw()
 	love.graphics.setColor( 96, 119, 39)
 	love.graphics.polygon(love.draw_fill, ground_shape:getPoints())
 	
-	--Draws the house
-	love.graphics.setColor( 150, 50, 50)
-	
-	for i = 1, #landscapeHouses, 1 do
-		love.graphics.polygon(love.draw_fill, landscapeHouses[i]:getPoints())
+	for i = 1, #landscapeHouse, 1 do
+		love.graphics.setColor( 150, 50, 50)
+		love.graphics.polygon(love.draw_fill, landscapeHouse[i]:getPoints())
+		love.graphics.setColor( 50, 25, 25)
+		love.graphics.polygon(love.draw_fill, landscapeHouseRoof[i]:getPoints())
 	end
 	
 end
