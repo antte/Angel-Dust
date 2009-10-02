@@ -5,6 +5,7 @@ love.filesystem.include("debug.lua");
 love.filesystem.include("collision.lua");
 love.filesystem.include("entity.lua");
 love.filesystem.include("npc.lua");
+love.filesystem.include("splat.lua");
 
 function load()
 	
@@ -14,7 +15,7 @@ function load()
 	angelLoad();
 	npcLoad();
 	itemLoad();
-
+	splatLoad();
 
 	createTestItems()
 	createTestNPC()
@@ -29,6 +30,7 @@ function update(dt)
 	landscapeUpdate(dt);
 	angelUpdate(dt);
 	npcUpdate(dt);
+	splatUpdate(dt);
 	
 end
 
@@ -38,6 +40,7 @@ function draw()
 	landscapeDraw();
 	angelDraw();
 	entityDraw();
+	splatDraw();
 
 end
 

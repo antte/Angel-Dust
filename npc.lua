@@ -100,6 +100,8 @@ function npcReceiveDmg(npcId, dmg)
 
 			debugMsg("NPC"..npcId.." destroyed!");
 
+			putSplat(entityBody[npcId]:getX(), entityBody[npcId]:getY())
+
 			-- entityHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
 			entityHitpoints[npcId] = false;
 	
