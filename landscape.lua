@@ -40,7 +40,7 @@ function landscapeLoad ()
 	
 	--Create newWorld(w,h)
 	world_layer0 = love.physics.newWorld(2000,2000)
-	world_layer0:setGravity(0, 100)
+	world_layer0:setGravity(0, 135)
 	
 	--Create ground
 	ground = love.physics.newBody(world_layer0, 0, 0, 0) --world, x, y, mass

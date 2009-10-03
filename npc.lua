@@ -12,7 +12,8 @@ function npcLoad()
 
 	-- Tweakable values
 	constNpcWalkingWait = 50; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
-	constNpcMaxWalkSpeed = 100; -- At what speed the npc's speed should be capped
+	constNpcMaxWalkSpeed = 50; -- At what speed the npc's speed should be capped
+	constNpcMinWalkSpeed = 30; -- If the npc doesnt reach this speed - it turns around
 
 end
 
@@ -27,7 +28,7 @@ function npcUpdate(dt)
 			vx, vy = entityBody[i]:getVelocity();
 			angle = entityBody[i]:getAngle();
 
-			if vx < 50 and vx > -50 and npcWalkingWait[i] < 1 then
+			if vx < constNpcMinWalkSpeed and vx > -constNpcMinWalkSpeed and npcWalkingWait[i] < 1 then
 				npcWalkingWait[i] = constNpcWalkingWait;
 				if npcWalkingDirection[i]=="left" then
 					npcWalkingDirection[i]="right"
@@ -63,6 +64,9 @@ function createNPC(x, y, hp)
 	npcShape = love.physics.newRectangleShape(npcBody, 12, 18)
 	npcBody:setMassFromShapes();
 	nx,ny=npcBody:getWorldPoint(10,10); -- The mass it gets is probably too much
+
+	npcShape:setCategory(5);
+	npcShape:setMask(5);
 
 
 	addEntity(npcBody,npcShape,"npc", hp);

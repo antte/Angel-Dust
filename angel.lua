@@ -55,8 +55,14 @@ function angelUpdate(dt)
 	o, characterYVelocity = characterBody:getVelocity();
 	if characterYVelocity < 0 or love.keyboard.isDown(love.key_down) then
 		characterShape:setMask(2);
+		if characterItemBeingHold ~= false then
+			entityShape[characterItemBeingHold]:setMask(2);
+		end
 	else
 		characterShape:setMask();
+		if characterItemBeingHold ~= false then
+			entityShape[characterItemBeingHold]:setMask();
+		end
 	end	
 
 	-- character still "alive"
