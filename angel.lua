@@ -148,7 +148,7 @@ function characterReleaseItem()
 
 	if distancejoint ~= nil then
 		
-
+		entityShape[characterItemBeingHold]:setMask();
 		grabbedItem=false;
 		characterItemBeingHold=false;
 		distancejoint:destroy()
@@ -171,7 +171,7 @@ function characterGrabItem(id)
 	
 	distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx, cy, ix, iy)	
 				
-	distancejoint:setLength(25);				
+	distancejoint:setLength(15);				
 
 end
  
