@@ -1,3 +1,4 @@
+love.filesystem.include("gamesettings.lua");
 love.filesystem.include("angel.lua");
 love.filesystem.include("landscape.lua");
 love.filesystem.include("item.lua");
@@ -8,7 +9,7 @@ love.filesystem.include("npc.lua");
 love.filesystem.include("splat.lua");
 
 function load()
-	
+
 	entityLoad();
 	debugLoad();
 	landscapeLoad();

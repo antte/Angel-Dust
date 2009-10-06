@@ -26,6 +26,8 @@ function checkVelocity(c)
 	return vy;	
 end
 
+-- Collision is a callback function. It checks which things are colliding and calls the corresponding functions 
+-- The first element when another collision function is called is ALWAYS the thing being altered(losing hp et.c) in the function
 function collision(a,b,c)
 
 	aType = getEntityType(a);
@@ -39,50 +41,18 @@ function collision(a,b,c)
 		if (aType=="item" and bType=="npc") then
 
 			npcCollision(b,a,c);
+			itemCollision(a,b,c);
 
 		elseif (aType=="npc" and bType=="item") then
 
 			npcCollision(a,b,c);
+			itemCollision(b,a,c);
 
 		end
 
-	end
-
-	if aType=="npc" and bType == "house" then
-
-			npcCollision(a,b,c);
-
-	elseif aType=="house" and bType == "npc" then
-
-			npcCollision(b,a,c);
-
-	end
-
-
-
-	if isEntity(a) then
-
-		aType = getEntityType(a);
-		if aType=="item" then
-
-			itemCollision(a,b,c)
-
-		end
-
-	elseif a == "character" then	
+	elseif  a == "character" then	
 	
 		angelCollision(a,b,c);
-
-	end
-
-	if isEntity(b) then
-
-		bType = getEntityType(b);
-		if bType=="item" then
-
-			itemCollision(b,a,c)
-
-		end
 
 	elseif b == "character" then
 

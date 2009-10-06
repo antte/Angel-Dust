@@ -15,6 +15,8 @@ function npcLoad()
 	constNpcMaxWalkSpeed = 50; -- At what speed the npc's speed should be capped
 	constNpcMinWalkSpeed = 30; -- If the npc doesnt reach this speed - it turns around
 
+	constNpcDmgAbsorb = 15; -- If damage dealt doesnt reach this minimum - no hitpoints are lost
+
 end
 
 function npcUpdate(dt)
@@ -96,21 +98,26 @@ end
 
 function npcReceiveDmg(npcId, dmg)
 
-	if entityHitpoints[npcId] then	
+	if dmg >= constNpcDmgAbsorb then
+
+		if entityHitpoints[npcId] then	
 		
-		entityHitpoints[npcId] = entityHitpoints[npcId] - dmg;
-
-		if entityHitpoints[npcId] <= 0 then
-
-			debugMsg("NPC"..npcId.." destroyed!");
-
-			putSplat(entityBody[npcId]:getX(), entityBody[npcId]:getY())
-
-			-- entityHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
-			entityHitpoints[npcId] = false;
+			entityHitpoints[npcId] = entityHitpoints[npcId] - dmg;
+			debugMsg("npc lost "..dmg.."hp");
+			if entityHitpoints[npcId] <= 0 then
 	
-		end
+				debugMsg("NPC"..npcId.." destroyed!");
 
+				putSplat(entityBody[npcId]:getX(), entityBody[npcId]:getY())
+
+				-- entityHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
+				entityHitpoints[npcId] = false;
+	
+			end
+
+		end
+	else
+		debugMsg("npc, Damaga abosorbed");
 	end
 
 end
@@ -119,7 +126,7 @@ function createTestNPC()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
 	while i<2 do
-		createNPC(300+100*i,700,70);
+		createNPC(300+100*i,700,40);
 		i=i+1;
 	end
 
@@ -133,10 +140,11 @@ function npcCollision(a,b,c)
 		v = checkVelocity(c);
 		b = tonumber(b);
 		power = math.floor(((entityBody[b]:getMass()/2) * v)/1000)
-		if power >= 9 then	
+		if power > constGamePowerAbsorb then	
 		
 			npcReceiveDmg(a,power);
 
 		end
 	end	
+
 end

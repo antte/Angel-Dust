@@ -4,6 +4,18 @@
 -- and "Game: Damage/Health"
 -- Created by Chux
 
+function itemLoad()
+
+	graphic_itemSofa = love.graphics.newImage("images/itemSofa.png", love.image_optimize);
+	graphic_itemCrate = love.graphics.newImage("images/itemCrate1515.png", love.image_optimize);
+	graphic_itemBasketball = love.graphics.newImage("images/itemBasketball.png", love.image_optimize);
+
+	itemGraphic = {}
+
+	-- Tweakable values
+	constItemDmgAbsorb = 15; -- If damage dealt doesnt reach this minimum - no hitpoints are lost
+
+end
 
 -- x and y sets position, 
 -- width and height the size of the item
@@ -40,17 +52,6 @@ function createBall(x, y, radius, hp, graphic)
 
 end
 
-
-function itemLoad()
-
-	graphic_itemSofa = love.graphics.newImage("images/itemSofa.png", love.image_optimize);
-	graphic_itemCrate = love.graphics.newImage("images/itemCrate1515.png", love.image_optimize);
-	graphic_itemBasketball = love.graphics.newImage("images/itemBasketball.png", love.image_optimize);
-
-	itemGraphic = {}
-
-end
-
 function itemDraw(i) 
 	
 	-- Can't draw an item that has been destroyed(which it should have been if hitpoints drop below 1
@@ -73,29 +74,31 @@ end
 function itemReceiveDmg(itemId, dmg)
 
 	if entityHitpoints[itemId] then	
+		if dmg >= constItemDmgAbsorb then
+			entityHitpoints[itemId] = entityHitpoints[itemId] - dmg;
+			debugMsg("Item "..itemId.." lost "..dmg.." hps"); 
 
-		entityHitpoints[itemId] = entityHitpoints[itemId] - dmg;
-		debugMsg("Item "..itemId.." lost "..dmg.." hps"); 
+			if entityHitpoints[itemId] <= 0 then
 
-		if entityHitpoints[itemId] <= 0 then
+	--			entityBody[itemId]:destroy();
+	--			entityShape[itemId]:destroy();
+				entityType[itemId]="destroyed";
+				entityBody[itemId]:setX(9999);
+				entityBody[itemId]:setY(9999);
 
---			entityBody[itemId]:destroy();
---			entityShape[itemId]:destroy();
-			entityType[itemId]="destroyed";
-			entityBody[itemId]:setX(9999);
-			entityBody[itemId]:setY(9999);
+				debugMsg("Item "..itemId.." destroyed!");
 
-			debugMsg("Item "..itemId.." destroyed!");
+				if characterItemBeingHold == itemId then
 
-			if characterItemBeingHold == itemId then
+					characterReleaseItem();
 
-				characterReleaseItem();
-
+				end
+				
+				-- itemsHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
+				entityHitpoints[itemId] = false;
+		
 			end
-			
-			-- itemsHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
-			entityHitpoints[itemId] = false;
-	
+		
 		end
 
 	end
@@ -122,29 +125,12 @@ function itemCollision(a,b,c)
 
 	v = checkVelocity(c);
 
-	-- If a is actually a number - and so an entity
-	if tonumber(a) ~= nil then
+	a = tonumber(a);
+	power = math.floor(((entityBody[a]:getMass()/2) * v)/1000)
+	if power > constGamePowerAbsorb then	
 
-		a = tonumber(a);
-		power = math.floor(((entityBody[a]:getMass()/2) * v)/1000)
-		if power >= 9 then	
-
-			itemReceiveDmg(a,power);
-
-		end
-	end
-
-	-- if b is actually a number - and so an entity
---[[	if tonumber(b) ~= nil then
-		b = tonumber(b);
-		power = math.floor(((entityBody[b]:getMass()/2) * v)/100000)
-		if power >= 9 then
-			itemReceiveDmg(b,power);
-
-			debugMsg(a.."&"..b.." b received dmg");
-		end	
+		itemReceiveDmg(a,power);
 
 	end
-]]--
 
 end
