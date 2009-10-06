@@ -6,6 +6,7 @@ function npcLoad()
 
 	graphic_npcLeft = love.graphics.newImage("images/npcLeft.png", love.image_optimize);
 	graphic_npcRight = love.graphics.newImage("images/npcRight.png", love.image_optimize);
+	graphic_npcDead = love.graphics.newImage("images/npcDead.png", love.image_optimize);
 
 	npcWalkingDirection = {}
 	npcWalkingWait = {}
@@ -63,7 +64,7 @@ end
 function createNPC(x, y, hp)
 
 	npcBody = love.physics.newBody( world_layer0, x, y);
-	npcShape = love.physics.newRectangleShape(npcBody, 12, 18)
+	npcShape = love.physics.newRectangleShape(npcBody, 10, 18)
 	npcBody:setMassFromShapes();
 	nx,ny=npcBody:getWorldPoint(10,10); -- The mass it gets is probably too much
 
@@ -87,11 +88,16 @@ function createNPC(x, y, hp)
 end
 
 function npcDraw(i) 
-	if npcWalkingDirection[i] == "left" then
-		love.graphics.draw(graphic_npcLeft, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
-	elseif npcWalkingDirection[i] == "right" then
 
-		love.graphics.draw(graphic_npcRight, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
+	if entityHitpoints[i] then
+		if npcWalkingDirection[i] == "left" then
+			love.graphics.draw(graphic_npcLeft, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
+		elseif npcWalkingDirection[i] == "right" then
+
+			love.graphics.draw(graphic_npcRight, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
+		end
+	else
+		love.graphics.draw(graphic_npcDead, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
 	end
 
 end
@@ -107,6 +113,8 @@ function npcReceiveDmg(npcId, dmg)
 			if entityHitpoints[npcId] <= 0 then
 	
 				debugMsg("NPC"..npcId.." destroyed!");
+				
+				entityBody[npcId]:setSpin(1000);
 
 				putSplat(entityBody[npcId]:getX(), entityBody[npcId]:getY())
 
@@ -125,8 +133,8 @@ end
 function createTestNPC()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
-	while i<2 do
-		createNPC(300+100*i,700,40);
+	while i<10 do
+		createNPC(50*i,700,40);
 		i=i+1;
 	end
 
