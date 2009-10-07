@@ -10,12 +10,13 @@ function npcLoad()
 
 	npcWalkingDirection = {}
 	npcWalkingWait = {}
+	npcRiseWait = {}
 
 	-- Tweakable values
 	constNpcWalkingWait = 60; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
 	constNpcMaxWalkSpeed = 50; -- At what speed the npc's speed should be capped
 	constNpcMinWalkSpeed = 25; -- If the npc doesnt reach this speed - it turns around
-
+	constNpcRiseWait = 100; -- When NPC has fallen - how long should he lie before he rises
 	constNpcDmgAbsorb = 15; -- If damage dealt doesnt reach this minimum - no hitpoints are lost
 
 end
@@ -26,30 +27,44 @@ function npcUpdate(dt)
 
 		if entityType[i]=="npc" and entityHitpoints[i] then
 
-
-			-- The walking direction stuff
-			vx, vy = entityBody[i]:getVelocity();
 			angle = entityBody[i]:getAngle();
+			vx, vy = entityBody[i]:getVelocity();
 
-			if vx < constNpcMinWalkSpeed and vx > -constNpcMinWalkSpeed and npcWalkingWait[i] < 1 then
-				npcWalkingWait[i] = constNpcWalkingWait;
-				if npcWalkingDirection[i]=="left" then
-					npcWalkingDirection[i]="right"
-				else
-					npcWalkingDirection[i]="left"
+			-- Is the npc standing up?
+			if angle < 1 and angle > -1 then
+
+				if vx < constNpcMinWalkSpeed and vx > -constNpcMinWalkSpeed and npcWalkingWait[i] < 1 then
+					npcWalkingWait[i] = constNpcWalkingWait;
+					if npcWalkingDirection[i]=="left" then
+						npcWalkingDirection[i]="right"
+					else
+						npcWalkingDirection[i]="left"
+					end
+				end
+
+				-- The actual "walking"
+				if vx < constNpcMaxWalkSpeed and vx > -constNpcMaxWalkSpeed then
+					if npcWalkingDirection[i] == "right" then
+						entityBody[i]:applyImpulse(40000*dt,0);
+					elseif npcWalkingDirection[i] == "left" then
+						entityBody[i]:applyImpulse(-40000*dt,0);
+					end
+				end
+				npcWalkingWait[i] = npcWalkingWait[i] - 1;
+
+			else
+				v=vx+vy;
+				if v < 5 and v > -5 and (angle < -30 or angle > 30) then
+					-- NPC is lying, he should rise!
+					if npcRiseWait[i] == 0 then
+						entityBody[i]:setAngle(0);
+						npcRiseWait[i] = constNpcRiseWait;
+					else
+						npcRiseWait[i] = npcRiseWait[i] - 1;
+					end
+
 				end
 			end
-
-			-- The actual "walking"
-			if angle < 1 and angle > -1 and vx < constNpcMaxWalkSpeed and vx > -constNpcMaxWalkSpeed then
-				if npcWalkingDirection[i] == "right" then
-					entityBody[i]:applyImpulse(40000*dt,0);
-				elseif npcWalkingDirection[i] == "left" then
-					entityBody[i]:applyImpulse(-40000*dt,0);
-				end
-			end
-			npcWalkingWait[i] = npcWalkingWait[i] - 1
-
 
 		end
 
@@ -84,6 +99,8 @@ function createNPC(x, y, hp)
 
 	table.insert(npcWalkingDirection, npcId, startDirection);
 	table.insert(npcWalkingWait, npcId, 0);
+	table.insert(npcRiseWait, npcId, constNpcRiseWait);
+
 
 end
 

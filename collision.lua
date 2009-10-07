@@ -31,7 +31,7 @@ end
 
 function getPower(v,m)
 	
-	power = math.floor( ( (m/2) * (v/2) ) / 1000);
+	power = math.floor( ( m * v ) / 4000);
 	return power;
 
 end
