@@ -18,8 +18,8 @@ function load()
 	itemLoad();
 	splatLoad();
 
-	createTestItems()
 	createTestNPC()
+	createTestItems()
 
 	collisionLoad();
 

@@ -14,6 +14,8 @@ function angelLoad()
 	characterBody = love.physics.newBody(world_layer0, 400, 200)
 	characterShape = love.physics.newRectangleShape(characterBody, 100,190, 20,20)
 	characterShape:setData("character");
+	characterShape:setCategory(5);
+
 	characterBody:setMassFromShapes( );
 	characterBody:setAngularDamping(10000)
 
@@ -199,7 +201,7 @@ function angelCollision(a, b, c)
 			if getEntityType(b)=="item" then	
 				lastItem = b
 				lastItemTime = love.timer.getTime()
-				checkVelocity(c);
+				getVelocity(c);
 		--	elseif genEntityType(b)=="npc" then
 	--			debugMsg("npc nigger");
 			end

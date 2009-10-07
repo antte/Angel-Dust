@@ -12,9 +12,9 @@ function npcLoad()
 	npcWalkingWait = {}
 
 	-- Tweakable values
-	constNpcWalkingWait = 50; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
+	constNpcWalkingWait = 60; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
 	constNpcMaxWalkSpeed = 50; -- At what speed the npc's speed should be capped
-	constNpcMinWalkSpeed = 30; -- If the npc doesnt reach this speed - it turns around
+	constNpcMinWalkSpeed = 25; -- If the npc doesnt reach this speed - it turns around
 
 	constNpcDmgAbsorb = 15; -- If damage dealt doesnt reach this minimum - no hitpoints are lost
 
@@ -43,9 +43,9 @@ function npcUpdate(dt)
 			-- The actual "walking"
 			if angle < 1 and angle > -1 and vx < constNpcMaxWalkSpeed and vx > -constNpcMaxWalkSpeed then
 				if npcWalkingDirection[i] == "right" then
-					entityBody[i]:applyImpulse(50000*dt,0);
+					entityBody[i]:applyImpulse(40000*dt,0);
 				elseif npcWalkingDirection[i] == "left" then
-					entityBody[i]:applyImpulse(-50000*dt,0);
+					entityBody[i]:applyImpulse(-40000*dt,0);
 				end
 			end
 			npcWalkingWait[i] = npcWalkingWait[i] - 1
@@ -70,7 +70,7 @@ function createNPC(x, y, hp)
 
 	npcShape:setCategory(5);
 	npcShape:setMask(5);
-
+	npcBody:setAngularDamping(10);
 
 	addEntity(npcBody,npcShape,"npc", hp);
 	local npcId = idOfLastCreatedEntity();	
@@ -115,6 +115,7 @@ function npcReceiveDmg(npcId, dmg)
 				debugMsg("NPC"..npcId.." destroyed!");
 				
 				entityBody[npcId]:setSpin(1000);
+				entityShape[npcId]:setMask(4,5);
 
 				putSplat(entityBody[npcId]:getX(), entityBody[npcId]:getY())
 
@@ -134,7 +135,7 @@ function createTestNPC()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
 	while i<10 do
-		createNPC(50*i,700,40);
+		createNPC(math.random(0,1000),700,40);
 		i=i+1;
 	end
 
@@ -145,9 +146,9 @@ function npcCollision(a,b,c)
 
 	-- This function is only called upon if a is an NPC
 	if getEntityType(b) == "item" then
-		v = checkVelocity(c);
+		v = getVelocity(c);
 		b = tonumber(b);
-		power = math.floor(((entityBody[b]:getMass()/2) * v)/1000)
+		power = getPower(v,entityBody[b]:getMass()); 
 		if power > constGamePowerAbsorb then	
 		
 			npcReceiveDmg(a,power);

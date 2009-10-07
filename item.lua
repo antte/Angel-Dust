@@ -26,6 +26,7 @@ function createBox(x, y, width, height, hp, graphic)
 	boxShape = love.physics.newRectangleShape(boxBody, width, height)
 	boxBody:setMassFromShapes();
 
+	boxShape:setCategory(4);
 	boxShape:setRestitution(0);
 	
 	addEntity(boxBody,boxShape,"item", hp);
@@ -42,6 +43,7 @@ function createBall(x, y, radius, hp, graphic)
 	ballShape = love.physics.newCircleShape(ballBody, radius);
 	ballBody:setMassFromShapes();
 
+	ballShape:setCategory(4);
 	ballShape:setRestitution(0.7);
 	
 	addEntity(ballBody,ballShape,"item", hp);
@@ -123,10 +125,10 @@ end
 
 function itemCollision(a,b,c)
 
-	v = checkVelocity(c);
-
+	v = getVelocity(c);
 	a = tonumber(a);
-	power = math.floor(((entityBody[a]:getMass()/2) * v)/1000)
+	power = getPower(v,entityBody[a]:getMass())
+
 	if power > constGamePowerAbsorb then	
 
 		itemReceiveDmg(a,power);

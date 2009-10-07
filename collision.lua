@@ -10,20 +10,30 @@ function collisionLoad()
 	
 end
 
-function checkVelocity(c)
+function getVelocity(c)
 	--[[
 	Tar in en collision och skriver ut velocity i debuggen.
 	]]--
 	
 	local vx, vy = c:getVelocity()
-	--debugMsg("Velocity: " .. vx .. "," .. vy)
 	
-	-- Maybe the highest velocity should be returned or something? This'll work for now
 	if vy<0 then
 		vy = -vy;
 	end
+	if vx<0 then
+		vx = -vx;
+	end
 
-	return vy;	
+	local v = vy + vx;
+
+	return v;	
+end
+
+function getPower(v,m)
+	
+	power = math.floor( ( (m/2) * (v/2) ) / 1000);
+	return power;
+
 end
 
 -- Collision is a callback function. It checks which things are colliding and calls the corresponding functions 
