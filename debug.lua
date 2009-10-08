@@ -37,5 +37,6 @@ function debugDraw()
 	end
 
 	love.graphics.draw(text, 10, 10);
+	love.graphics.draw(love.timer.getFPS().."fps", 980, 10);
 
 end

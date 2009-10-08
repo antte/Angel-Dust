@@ -14,7 +14,7 @@ function angelLoad()
 	characterBody = love.physics.newBody(world_layer0, 400, 200)
 	characterShape = love.physics.newRectangleShape(characterBody, 100,190, 20,20)
 	characterShape:setData("character");
-	characterShape:setCategory(5);
+	characterShape:setCategory(6);
 
 	characterBody:setMassFromShapes( );
 	characterBody:setAngularDamping(10000)

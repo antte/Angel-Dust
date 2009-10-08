@@ -16,7 +16,7 @@ function npcLoad()
 	constNpcWalkingWait = 60; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
 	constNpcMaxWalkSpeed = 50; -- At what speed the npc's speed should be capped
 	constNpcMinWalkSpeed = 25; -- If the npc doesnt reach this speed - it turns around
-	constNpcRiseWait = 100; -- When NPC has fallen - how long should he lie before he rises
+	constNpcRiseWait = 2; -- When NPC has fallen - how long in seconds should he lie before he rises
 	constNpcDmgAbsorb = 15; -- If damage dealt doesnt reach this minimum - no hitpoints are lost
 
 end
@@ -31,7 +31,7 @@ function npcUpdate(dt)
 			vx, vy = entityBody[i]:getVelocity();
 
 			-- Is the npc standing up?
-			if angle < 1 and angle > -1 then
+			if angle < 3 and angle > -3 then
 
 				if vx < constNpcMinWalkSpeed and vx > -constNpcMinWalkSpeed and npcWalkingWait[i] < 1 then
 					npcWalkingWait[i] = constNpcWalkingWait;
@@ -45,9 +45,9 @@ function npcUpdate(dt)
 				-- The actual "walking"
 				if vx < constNpcMaxWalkSpeed and vx > -constNpcMaxWalkSpeed then
 					if npcWalkingDirection[i] == "right" then
-						entityBody[i]:applyImpulse(40000*dt,0);
+						entityBody[i]:applyImpulse(3000,0);
 					elseif npcWalkingDirection[i] == "left" then
-						entityBody[i]:applyImpulse(-40000*dt,0);
+						entityBody[i]:applyImpulse(-3000,0);
 					end
 				end
 				npcWalkingWait[i] = npcWalkingWait[i] - 1;
@@ -56,11 +56,11 @@ function npcUpdate(dt)
 				v=vx+vy;
 				if v < 5 and v > -5 and (angle < -30 or angle > 30) then
 					-- NPC is lying, he should rise!
-					if npcRiseWait[i] == 0 then
+					if npcRiseWait[i] < 0 then
 						entityBody[i]:setAngle(0);
 						npcRiseWait[i] = constNpcRiseWait;
 					else
-						npcRiseWait[i] = npcRiseWait[i] - 1;
+						npcRiseWait[i] = npcRiseWait[i] - 1*dt;
 					end
 
 				end
@@ -85,7 +85,8 @@ function createNPC(x, y, hp)
 
 	npcShape:setCategory(5);
 	npcShape:setMask(5);
-	npcBody:setAngularDamping(10);
+	npcBody:setAngularDamping(5);
+	npcShape:setFriction(0.4);
 
 	addEntity(npcBody,npcShape,"npc", hp);
 	local npcId = idOfLastCreatedEntity();	
@@ -151,7 +152,7 @@ end
 function createTestNPC()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
-	while i<10 do
+	while i<5 do
 		createNPC(math.random(0,1000),700,40);
 		i=i+1;
 	end
