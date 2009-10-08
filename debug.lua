@@ -6,6 +6,7 @@ function debugLoad()
 	debugfont = love.graphics.newFont(love.default_font, 10)
 	love.graphics.setFont(debugfont)
 	debugArray={};
+	showDebug=false;
 	table.insert(debugArray,"This is the Debugger!");	
 
 end
@@ -26,17 +27,29 @@ function debugMsg(text)
 end
 
 function debugDraw()
-	
-	local text = "";
 
-	love.graphics.setColor( 0, 0, 0)
+	if showDebug == true then	
+		local text = "";
 
-	for i = 1, #debugArray, 1 do
-		text = text .. debugArray[i] .. "\n"
-		i=i+1
+		love.graphics.setColor( 0, 0, 0)
+
+		for i = 1, #debugArray, 1 do
+			text = text .. debugArray[i] .. "\n"
+			i=i+1
+		end
+
+		love.graphics.draw(text, 10, 10);
+		love.graphics.draw(love.timer.getFPS().."fps", 980, 10);
 	end
 
-	love.graphics.draw(text, 10, 10);
-	love.graphics.draw(love.timer.getFPS().."fps", 980, 10);
-
 end
+
+function keypressed(key) 
+	if key == love.key_d then 
+		showDebug = not showDebug;
+	end
+	
+	if key == love.key_r then
+		love.system.restart();
+	end 
+end 
