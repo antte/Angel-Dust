@@ -57,7 +57,6 @@ end
 
 -- This is where the player input "happends"
 function angelUpdate(dt)
-
 	-- This is for the "platform-bit"
 	o, characterYVelocity = characterBody:getVelocity();
 	if characterYVelocity < 0 or love.keyboard.isDown(love.key_down) then

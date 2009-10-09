@@ -152,8 +152,8 @@ end
 function createTestNPC()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
-	while i<5 do
-		createNPC(math.random(0,1000),700,40);
+	while i<30 do
+		createNPC(math.random(0,8000),700,40);
 		i=i+1;
 	end
 

@@ -117,10 +117,15 @@ end
 
 function createTestItems()  -- used for testing purposes only
 
-	createBox(100,300,15,15,5000,"crate");
-	createBox(150,300,35,11,5000,"sofa");
-	--createBall(180,300,4,5000,"basketball");
-
+	local test=40;
+	while test>0 do
+		if math.random(0,1) == 0 then
+			createBox(test*200,0,15,15,5000,"crate");
+		else
+			createBox(test*200,0,35,11,5000,"sofa");
+		end
+		test=test-1;
+	end
 end
 
 function itemCollision(a,b,c)

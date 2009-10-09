@@ -29,7 +29,7 @@ end
 function debugDraw()
 
 	if showDebug == true then	
-		local text = "";
+		local text = love.timer.getFPS().."fps\n";
 
 		love.graphics.setColor( 0, 0, 0)
 
@@ -38,8 +38,9 @@ function debugDraw()
 			i=i+1
 		end
 
-		love.graphics.draw(text, 10, 10);
-		love.graphics.draw(love.timer.getFPS().."fps", 980, 10);
+
+		local x, y = getCamera():unpos(15,15);
+		love.graphics.draw(text, x,y);
 	end
 
 end
