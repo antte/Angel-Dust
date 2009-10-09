@@ -35,8 +35,11 @@ function angelLoad()
 	characterFlapPower = 25000; -- How much force a flap gives
 	characterFlapStamina = 9; -- How much stamina a flap "cost"
 	characterStaminaGain = 28; -- How much stamina is regained per second
-	characterGrabTime = 0.5; -- How soon after contact a "grab" must be initiated to suceed
+	characterGrabTime = 0.5; -- How soon after contact a "grab" must be initiated to succeed
 	characterGlide = 25000; -- How much "glide" you get. Higher value = more glide. 
+
+	graphic_angel = love.graphics.newImage("images/angel.png", love.image_optimize);
+	graphic_angelFlapped = love.graphics.newImage("images/angelflapped.png", love.image_optimize);
 
 	world_layer0:setCallback(collision);
 
@@ -44,10 +47,12 @@ end
 
 function angelDraw()
 	
-	-- Set nice color for the character, for testing purpose
-	love.graphics.setColor( 0, 0, 0);
-	love.graphics.polygon(love.draw_fill, characterShape:getPoints());
-
+	cx, cy = characterBody:getWorldCenter();
+	if characterFlapped then
+		love.graphics.draw(graphic_angelFlapped, cx, cy, 0);
+	else	
+		love.graphics.draw(graphic_angel, cx, cy, 0);
+	end
 end
 
 -- This is where the player input "happends"
