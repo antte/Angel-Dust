@@ -155,7 +155,8 @@ function characterReleaseItem()
 		characterItemBeingHold=false;
 		distancejoint:destroy()
 		distancejoint=nil;
-
+		distancejoint2:destroy()
+		distancejoint2=nil;
 	end
 	
 end
@@ -170,10 +171,19 @@ function characterGrabItem(id)
 	-- Can't really explain this... Should be commented
 	cx, cy = characterBody:getWorldCenter()
 	ix, iy = grabbedItem:getWorldCenter() 
-	
-	distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx, cy, ix, iy)	
+
+	distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx-8, cy, ix-8, iy)	
 				
 	distancejoint:setLength(15);				
+
+	distancejoint:setDamping(0);
+
+	distancejoint2 = love.physics.newDistanceJoint(characterBody, entityBody[id], cx+8, cy, ix+8, iy)	
+				
+	distancejoint2:setLength(15);
+
+	distancejoint2:setDamping(0);
+	
 
 end
  
@@ -195,18 +205,13 @@ end
 
 function angelCollision(a, b, c) 
 	
-	if a == "character" then
-		-- set lastItem to the data of "b", the key for the specific shape in the itemsShape table.
-		if isEntity(b) then
-			if getEntityType(b)=="item" then	
-				lastItem = b
-				lastItemTime = love.timer.getTime()
-				getVelocity(c);
-		--	elseif genEntityType(b)=="npc" then
-	--			debugMsg("npc nigger");
-			end
+	-- set lastItem to the data of "b", the key for the specific shape in the itemsShape table.
+	if isEntity(b) then
+		if getEntityType(b)=="item" then	
+			lastItem = b
+			lastItemTime = love.timer.getTime()
+			getVelocity(c);
 		end
-
 	end
 
 end
