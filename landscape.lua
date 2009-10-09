@@ -78,7 +78,7 @@ function landscapeDraw()
 	love.graphics.polygon(love.draw_fill, ground_shape:getPoints())
 	
 	for i = 1, #landscapeHouse, 1 do
-		love.graphics.setColor( 150, 50, 50)
+		love.graphics.setColor( 150, 150, 150)
 		love.graphics.polygon(love.draw_fill, landscapeHouse[i]:getPoints())
 		love.graphics.setColor( 50, 25, 25)
 		love.graphics.polygon(love.draw_fill, landscapeHouseRoof[i]:getPoints())
