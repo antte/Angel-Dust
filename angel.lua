@@ -32,12 +32,12 @@ function angelLoad()
 	characterItemPickup = false;
 
 	-- Values that should be tweaked
-	characterWalkPower = 40000;
-	characterFlapPower = 25000; -- How much force a flap gives
+	characterWalkPower = 30000;
+	characterFlapPower = 26000; -- How much force a flap gives
 	characterFlapStamina = 9; -- How much stamina a flap "cost"
 	characterStaminaGain = 28; -- How much stamina is regained per second
 	characterGrabTime = 0.5; -- How soon after contact a "grab" must be initiated to succeed
-	characterGlide = 25000; -- How much "glide" you get. Higher value = more glide. 
+	characterGlide = 24000; -- How much "glide" you get. Higher value = more glide. 
 
 	graphic_angel = love.graphics.newImage("images/angel.png", love.image_optimize);
 	graphic_angelFlapped = love.graphics.newImage("images/angelflapped.png", love.image_optimize);

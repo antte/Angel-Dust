@@ -45,9 +45,9 @@ function npcUpdate(dt)
 				-- The actual "walking"
 				if vx < constNpcMaxWalkSpeed and vx > -constNpcMaxWalkSpeed then
 					if npcWalkingDirection[i] == "right" then
-						entityBody[i]:applyImpulse(3000,0);
+						entityBody[i]:applyImpulse(2000,0);
 					elseif npcWalkingDirection[i] == "left" then
-						entityBody[i]:applyImpulse(-3000,0);
+						entityBody[i]:applyImpulse(-2000,0);
 					end
 				end
 				npcWalkingWait[i] = npcWalkingWait[i] - 1;
