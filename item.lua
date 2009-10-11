@@ -28,6 +28,7 @@ function createBox(x, y, width, height, hp, graphic)
 
 	boxShape:setCategory(4);
 	boxShape:setRestitution(0);
+	boxShape:setFriction(3);
 	
 	addEntity(boxBody,boxShape,"item", hp);
 	boxId = idOfLastCreatedEntity();	
@@ -120,9 +121,9 @@ function createTestItems()  -- used for testing purposes only
 	local test=40;
 	while test>0 do
 		if math.random(0,1) == 0 then
-			createBox(test*200,0,15,15,5000,"crate");
+			createBox(test*200,700,15,15,5000,"crate");
 		else
-			createBox(test*200,0,35,11,5000,"sofa");
+			createBox(test*200,700,35,11,5000,"sofa");
 		end
 		test=test-1;
 	end

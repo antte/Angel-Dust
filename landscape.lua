@@ -48,10 +48,10 @@ function landscapeLoad ()
 
 	-- Create borders
 	borderleft = love.physics.newBody(world_layer0, 0, 0, 0) --world, x, y, mass
-	borderleft_shape = love.physics.newRectangleShape(borderleft, -2, 768/2, 2, 768) -- x, y, w, h
+	borderleft_shape = love.physics.newRectangleShape(borderleft, -2, 0, 2, 8000) -- x, y, w, h
 
 	borderright = love.physics.newBody(world_layer0, 0, 0, 0) --world, x, y, mass
-	borderright_shape = love.physics.newRectangleShape(borderright, 8000 , 768/2, 2, 768) -- x, y, w, h
+	borderright_shape = love.physics.newRectangleShape(borderright, 7998 , 0, 2, 8000) -- x, y, w, h
 
 	local test=14;
 	while test > 0 do

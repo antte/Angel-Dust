@@ -11,8 +11,9 @@ function angelLoad()
 	-- Should "world" be an argument in the function?
 
 	-- Create box2d shape and body for the character
-	characterBody = love.physics.newBody(world_layer0, 400, 200)
-	characterShape = love.physics.newRectangleShape(characterBody, 100,190, 20,20)
+	characterBody = love.physics.newBody(world_layer0, 100, 700)
+	--characterShape = love.physics.newRectangleShape(characterBody, 100,190, 20,20)
+	characterShape = love.physics.newCircleShape(characterBody, 10);
 	characterShape:setData("character");
 	characterShape:setCategory(6);
 

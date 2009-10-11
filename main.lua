@@ -12,7 +12,7 @@ love.filesystem.include("splat.lua");
 
 function load()
 
-	getCamera():scaleBy(1.5);
+	getCamera():scaleBy(1);
  
 	entityLoad();
 	debugLoad();
@@ -32,26 +32,30 @@ end
 
 function update(dt)
 
-	cx, cy = characterBody:getWorldCenter();
-	cy = cy/2;
-	if cy >= (love.graphics.getWindowHeight())/3 then
-		cy = (love.graphics.getWindowHeight())/3
+	-- This should probably be placed somewhere else...
+	cx, cy = characterBody:getPosition();
+	cy = cy - love.graphics.getWindowHeight()/2;
+
+	if cy > 0 then
+		cy = 0
+	elseif cy < -1000 then
+		cy = -1000;
 	end
 
 	cx = cx - love.graphics.getWindowWidth()/2; 
-	if cx <= 0 then
-		cx = (love.graphics.getWindowWidth())/2 - (love.graphics.getWindowWidth())/2;
-	else
-		--cx = cx - love.graphics.getWindowWidth()/2;
+	if cx < 0 then
+		cx = 0
+	elseif cx > 6980 then
+		cx = 6980
 	end
 
 	getCamera():setOrigin(cx, cy) -- focus on the player
-
+	
 	landscapeUpdate(dt);
 	angelUpdate(dt);
 	npcUpdate(dt);
 	splatUpdate(dt);
-	
+
 end
 
 function draw()

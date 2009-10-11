@@ -15,8 +15,8 @@ function npcLoad()
 	-- Tweakable values
 	constNpcWalkingWait = 60; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
 	constNpcMaxWalkSpeed = 50; -- At what speed the npc's speed should be capped
-	constNpcMinWalkSpeed = 25; -- If the npc doesnt reach this speed - it turns around
-	constNpcRiseWait = 2; -- When NPC has fallen - how long in seconds should he lie before he rises
+	constNpcMinWalkSpeed = 20; -- If the npc doesnt reach this speed - it turns around
+	constNpcRiseWait = 3; -- When NPC has fallen - how long in seconds should he lie before he rises
 	constNpcDmgAbsorb = 15; -- If damage dealt doesnt reach this minimum - no hitpoints are lost
 
 end
