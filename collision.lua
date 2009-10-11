@@ -31,7 +31,7 @@ end
 
 function getPower(v,m)
 	
-	power = math.floor( ( m * v ) / 4000);
+	power = math.floor( ( m * (v*2) ) / 4000);
 	return power;
 
 end
@@ -68,6 +68,9 @@ function collision(a,b,c)
 
 		angelCollision(b,a,c);
 
-	end
+	elseif a == "ground" and bType == "npc" then
+		npcCollision(b,a,c);
+
+	end	
 
 end
