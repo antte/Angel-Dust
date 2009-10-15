@@ -17,9 +17,6 @@ function getVelocity(c)
 	
 	local vx, vy = c:getVelocity()
 	
-	if vy<0 then
-		vy = -vy;
-	end
 	if vx<0 then
 		vx = -vx;
 	end
