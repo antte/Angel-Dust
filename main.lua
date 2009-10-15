@@ -56,6 +56,8 @@ function update(dt)
 	npcUpdate(dt);
 	splatUpdate(dt);
 
+	-- Let the cpu chillax	
+	love.timer.sleep(5) 
 end
 
 function draw()
