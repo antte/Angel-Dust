@@ -31,40 +31,43 @@ function npcUpdate(dt)
 			angle = entityBody[i]:getAngle();
 			vx, vy = entityBody[i]:getVelocity();
 
-			-- Is the npc standing up? AND IS NOT LIFTED
-			if angle < 3 and angle > -3 and npcLifted[i] == false then
+			-- Only do stuff if the npc is not lifted!
+			if  npcLifted[i] == false then
+					  -- Is the npc standing up?
+					  if angle < 3 and angle > -3 then
 
-				if vx < constNpcMinWalkSpeed and vx > -constNpcMinWalkSpeed and npcWalkingWait[i] < 1 then
-					npcWalkingWait[i] = constNpcWalkingWait;
-					if npcWalkingDirection[i]=="left" then
-						npcWalkingDirection[i]="right"
-					else
-						npcWalkingDirection[i]="left"
-					end
-				end
+						  if vx < constNpcMinWalkSpeed and vx > -constNpcMinWalkSpeed and npcWalkingWait[i] < 1 then
+							  npcWalkingWait[i] = constNpcWalkingWait;
+							  if npcWalkingDirection[i]=="left" then
+								  npcWalkingDirection[i]="right"
+							  else
+								  npcWalkingDirection[i]="left"
+							  end
+						  end
 
-				-- The actual "walking"
-				if vx < constNpcMaxWalkSpeed and vx > -constNpcMaxWalkSpeed then
-					if npcWalkingDirection[i] == "right" then
-						entityBody[i]:applyImpulse(2000,0);
-					elseif npcWalkingDirection[i] == "left" then
-						entityBody[i]:applyImpulse(-2000,0);
-					end
-				end
-				npcWalkingWait[i] = npcWalkingWait[i] - 1;
+						  -- The actual "walking"
+						  if vx < constNpcMaxWalkSpeed and vx > -constNpcMaxWalkSpeed then
+							  if npcWalkingDirection[i] == "right" then
+								  entityBody[i]:applyImpulse(2000,0);
+							  elseif npcWalkingDirection[i] == "left" then
+								  entityBody[i]:applyImpulse(-2000,0);
+							  end
+						  end
+						  npcWalkingWait[i] = npcWalkingWait[i] - 1;
 
-			else
-				v=vx+vy;
-				if v < 5 and v > -5 and (angle < -30 or angle > 30) then
-					-- NPC is lying, he should rise!
-					if npcRiseWait[i] < 0 then
-						entityBody[i]:setAngle(0);
-						npcRiseWait[i] = constNpcRiseWait;
-					else
-						npcRiseWait[i] = npcRiseWait[i] - 1*dt;
-					end
+					  else
+						  v=vx+vy;
+						  if v < 5 and v > -5 and (angle < -30 or angle > 30) then
+							  -- NPC is lying, he should rise!
+							  if npcRiseWait[i] < 0 then
+								  entityBody[i]:setAngle(0);
+								  npcRiseWait[i] = constNpcRiseWait;
+							  else
+								  npcRiseWait[i] = npcRiseWait[i] - 1*dt;
+							  end
 
-				end
+						  end
+					  end
 			end
 
 		end
@@ -175,10 +178,8 @@ function npcCollision(a,b,c)
 
 	if b == "ground" then
 		v = getVelocity(c);
-
 		-- This is not okay. Ugly solution.
 		if v  > 250 then	
-		
 			npcReceiveDmg(a,100);
 
 		end

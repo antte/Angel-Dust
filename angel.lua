@@ -25,7 +25,7 @@ function angelLoad()
 	characterHitpoints = 100;
 	characterStamina = 100;
 	characterMaxStamina = 100;
-	characterEntityBeingHold = false; -- False if no entity, number of the entity if in fact holding one.
+	characterEntityBeingHeld = false; -- False if no entity, number of the entity if in fact holding one.
 
 	-- Toggles to make an action not repeat over updates. 
 	characterFlapped = false; -- Ugly..
@@ -62,13 +62,13 @@ function angelUpdate(dt)
 	o, characterYVelocity = characterBody:getVelocity();
 	if characterYVelocity < 0 or love.keyboard.isDown(love.key_down) then
 		characterShape:setMask(2);
-		if characterEntityBeingHold ~= false then
-			entityShape[characterEntityBeingHold]:setMask(2);
+		if characterEntityBeingHeld ~= false then
+			entityShape[characterEntityBeingHeld]:setMask(2);
 		end
 	else
 		characterShape:setMask();
-		if characterEntityBeingHold ~= false then
-			entityShape[characterEntityBeingHold]:setMask();
+		if characterEntityBeingHeld ~= false then
+			entityShape[characterEntityBeingHeld]:setMask();
 		end
 	end	
 
@@ -116,7 +116,7 @@ function angelUpdate(dt)
 	
 			if characterEntityPickup==false then
 				
-				if characterEntityBeingHold == false then -- If an entity is NOT being hold...
+				if characterEntityBeingHeld == false then -- If an entity is NOT being hold...
 		
 					if distancejoint==nil and lastEntityTouched ~= nil then
 				
@@ -154,12 +154,12 @@ end
 function characterReleaseEntity()
 
 	if distancejoint ~= nil then
-		if getEntityType(grabbedEntity) == "npc" then
-			npcLifted[b]=false;
+		if getEntityType(characterEntityBeingHeld) == "npc" then
+			npcLifted[characterEntityBeingHeld]=false;
 		end
-		entityShape[characterEntityBeingHold]:setMask();
+		entityShape[characterEntityBeingHeld]:setMask();
 		grabbedEntity=false;
-		characterEntityBeingHold=false;
+		characterEntityBeingHeld=false;
 		distancejoint:destroy()
 		distancejoint=nil;
 		distancejoint2:destroy()
@@ -171,7 +171,7 @@ end
 function characterGrabEntity(id)
 
 	grabbedEntity=getEntityBody(id);					
-	characterEntityBeingHold=id;
+	characterEntityBeingHeld=id;
 	
 	debugMsg("Character grabbed entity " .. id);
 
@@ -216,9 +216,6 @@ function angelCollision(a, b, c)
 	if isEntity(b) then
 			lastEntityTouched = b
 			lastEntityTouchedTime = love.timer.getTime();
-			if getEntityType(b) == "npc" then
-				npcLifted[b]=true;
-			end
 	end
 
 end

@@ -53,6 +53,7 @@ function landscapeLoad ()
 	borderright = love.physics.newBody(world_layer0, 0, 0, 0) --world, x, y, mass
 	borderright_shape = love.physics.newRectangleShape(borderright, 7998 , 0, 2, 8000) -- x, y, w, h
 
+	math.randomseed(os.time());
 	local test=14;
 	while test > 0 do
 		test = test -1;
