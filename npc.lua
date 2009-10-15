@@ -153,7 +153,7 @@ function createTestNPC()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
 	while i<30 do
-		createNPC(math.random(0,8000),250,40);
+		createNPC(math.random(0,8000),600,40);
 		i=i+1;
 	end
 
@@ -178,7 +178,7 @@ function npcCollision(a,b,c)
 		v = getVelocity(c);
 
 		-- This is not okay. Ugly solution.
-		if v  > 190 then	
+		if v  > 250 then	
 		
 			npcReceiveDmg(a,100);
 
