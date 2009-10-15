@@ -25,11 +25,11 @@ function angelLoad()
 	characterHitpoints = 100;
 	characterStamina = 100;
 	characterMaxStamina = 100;
-	characterItemBeingHold = false; -- False if no item, number of the entity if in fact holding one.
+	characterEntityBeingHold = false; -- False if no entity, number of the entity if in fact holding one.
 
 	-- Toggles to make an action not repeat over updates. 
 	characterFlapped = false; -- Ugly..
-	characterItemPickup = false;
+	characterEntityPickup = false;
 
 	-- Values that should be tweaked
 	characterWalkPower = 30000;
@@ -62,13 +62,13 @@ function angelUpdate(dt)
 	o, characterYVelocity = characterBody:getVelocity();
 	if characterYVelocity < 0 or love.keyboard.isDown(love.key_down) then
 		characterShape:setMask(2);
-		if characterItemBeingHold ~= false then
-			entityShape[characterItemBeingHold]:setMask(2);
+		if characterEntityBeingHold ~= false then
+			entityShape[characterEntityBeingHold]:setMask(2);
 		end
 	else
 		characterShape:setMask();
-		if characterItemBeingHold ~= false then
-			entityShape[characterItemBeingHold]:setMask();
+		if characterEntityBeingHold ~= false then
+			entityShape[characterEntityBeingHold]:setMask();
 		end
 	end	
 
@@ -114,30 +114,30 @@ function angelUpdate(dt)
 		-- Picking stuff up
 		if love.keyboard.isDown(love.key_space) then
 	
-			if characterItemPickup==false then
+			if characterEntityPickup==false then
 				
-				if characterItemBeingHold == false then -- If an item is NOT being hold...
+				if characterEntityBeingHold == false then -- If an entity is NOT being hold...
 		
-					if distancejoint==nil and lastItem ~= nil then
+					if distancejoint==nil and lastEntityTouched ~= nil then
 				
-						if love.timer.getTime()-lastItemTime < characterGrabTime then
+						if love.timer.getTime()-lastEntityTouchedTime < characterGrabTime then
 				
-							local id = lastItem;
-							characterGrabItem(id);
+							local id = lastEntityTouched;
+							characterGrabEntity(id);
 		
 						end
 		
 					end
 				else
 
-					characterReleaseItem();
+					characterReleaseEntity();
 
 				end
 			end
-			characterItemPickup=true;
+			characterEntityPickup=true;
 
 		else
-			characterItemPickup=false;
+			characterEntityPickup=false;
 		end
 	else 
 		debugMsg("Character is dead");
@@ -151,13 +151,15 @@ function angelUpdate(dt)
 
 end
 
-function characterReleaseItem()
+function characterReleaseEntity()
 
 	if distancejoint ~= nil then
-		
-		entityShape[characterItemBeingHold]:setMask();
-		grabbedItem=false;
-		characterItemBeingHold=false;
+		if getEntityType(grabbedEntity) == "npc" then
+			npcLifted[b]=false;
+		end
+		entityShape[characterEntityBeingHold]:setMask();
+		grabbedEntity=false;
+		characterEntityBeingHold=false;
 		distancejoint:destroy()
 		distancejoint=nil;
 		distancejoint2:destroy()
@@ -166,29 +168,29 @@ function characterReleaseItem()
 	
 end
 
-function characterGrabItem(id)
+function characterGrabEntity(id)
 
-	grabbedItem=getEntityBody(id);					
-	characterItemBeingHold=id;
+	grabbedEntity=getEntityBody(id);					
+	characterEntityBeingHold=id;
 	
-	debugMsg("Character grabbed item " .. id);
+	debugMsg("Character grabbed entity " .. id);
 
 	-- Can't really explain this... Should be commented
 	cx, cy = characterBody:getWorldCenter()
-	ix, iy = grabbedItem:getWorldCenter() 
+	ix, iy = grabbedEntity:getWorldCenter() 
 
 	distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx-8, cy, ix-8, iy)	
-				
 	distancejoint:setLength(15);				
-
 	distancejoint:setDamping(0);
 
 	distancejoint2 = love.physics.newDistanceJoint(characterBody, entityBody[id], cx+8, cy, ix+8, iy)	
-				
 	distancejoint2:setLength(15);
-
 	distancejoint2:setDamping(0);
-	
+
+
+	if getEntityType(id) == "npc" then
+		npcLifted[id]=true;
+	end
 
 end
  
@@ -210,13 +212,13 @@ end
 
 function angelCollision(a, b, c) 
 	
-	-- set lastItem to the data of "b", the key for the specific shape in the itemsShape table.
+	-- set lastItem to the data of "b", the key for the specific shape in the entityShape table.
 	if isEntity(b) then
-		if getEntityType(b)=="item" then	
-			lastItem = b
-			lastItemTime = love.timer.getTime()
-			getVelocity(c);
-		end
+			lastEntityTouched = b
+			lastEntityTouchedTime = love.timer.getTime();
+			if getEntityType(b) == "npc" then
+				npcLifted[b]=true;
+			end
 	end
 
 end

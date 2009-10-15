@@ -11,6 +11,7 @@ function npcLoad()
 	npcWalkingDirection = {}
 	npcWalkingWait = {}
 	npcRiseWait = {}
+	npcLifted = {}
 
 	-- Tweakable values
 	constNpcWalkingWait = 60; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
@@ -30,8 +31,8 @@ function npcUpdate(dt)
 			angle = entityBody[i]:getAngle();
 			vx, vy = entityBody[i]:getVelocity();
 
-			-- Is the npc standing up?
-			if angle < 3 and angle > -3 then
+			-- Is the npc standing up? AND IS NOT LIFTED
+			if angle < 3 and angle > -3 and npcLifted[i] == false then
 
 				if vx < constNpcMinWalkSpeed and vx > -constNpcMinWalkSpeed and npcWalkingWait[i] < 1 then
 					npcWalkingWait[i] = constNpcWalkingWait;
@@ -101,7 +102,7 @@ function createNPC(x, y, hp)
 	table.insert(npcWalkingDirection, npcId, startDirection);
 	table.insert(npcWalkingWait, npcId, 0);
 	table.insert(npcRiseWait, npcId, constNpcRiseWait);
-
+	table.insert(npcLifted, false);
 
 end
 
@@ -143,8 +144,6 @@ function npcReceiveDmg(npcId, dmg)
 			end
 
 		end
-	else
-		debugMsg("npc, Damaga abosorbed");
 	end
 
 end
