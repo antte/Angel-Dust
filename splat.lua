@@ -2,7 +2,32 @@ function splatLoad()
 
 	graphic_splat = love.graphics.newImage("images/splat.png");
 
-	psSplat= love.graphics.newParticleSystem(graphic_splat, 1000)
+	splatTable = {};
+	
+end
+
+function splatUpdate(dt)
+	for i=1, #splatTable, 1 do
+		splatTable[i]:update(dt);
+	end
+
+end
+
+function splatDraw()
+
+	for i=1, #splatTable, 1 do
+
+		love.graphics.setColorMode(love.color_modulate);
+		love.graphics.draw(splatTable[i], splatTable[i]:getX(), splatTable[i]:getY())
+		love.graphics.setColorMode(love.color_normal);
+
+	end
+
+end
+
+function putSplat(x,y)
+
+	psSplat = love.graphics.newParticleSystem(graphic_splat, 1000)
 	psSplat:setEmissionRate(70)
 	psSplat:setSpeed(40, 100)
 	psSplat:setGravity(40, 90)
@@ -13,32 +38,10 @@ function splatLoad()
 	psSplat:setDirection(270)
 	psSplat:setSpread(50)
 	
-	psSplatX = -2000;
-	psSplatY = -2000;
-	
-end
-
-function splatUpdate(dt)
-	
-	psSplat:update(dt);
-
-end
-
-function splatDraw()
-	
-	love.graphics.setColorMode(love.color_modulate);
-
-	love.graphics.draw(psSplat, psSplatX,psSplatY)
-
-	love.graphics.setColorMode(love.color_normal);
-
-end
-
-function putSplat(x,y)
-
-	
 	psSplat:start();
 	psSplatX = x;
 	psSplatY = y;
+
+	table.insert(splatTable, psSplat);
 
 end
