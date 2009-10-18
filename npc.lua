@@ -4,9 +4,8 @@
 
 function npcLoad()
 
-	graphic_npcLeft = love.graphics.newImage("images/npcLeft.png", love.image_optimize);
-	graphic_npcRight = love.graphics.newImage("images/npcRight.png", love.image_optimize);
-	graphic_npcDead = love.graphics.newImage("images/npcDead.png", love.image_optimize);
+	graphic_npc = love.graphics.newImage("images/npc/npc.png", love.image_optimize);
+	graphic_npcDead = love.graphics.newImage("images/npc/npcdead.png", love.image_optimize);
 
 	npcWalkingDirection = {}
 	npcWalkingWait = {}
@@ -82,9 +81,9 @@ end
 -- hp the "hitpoints"(health) it got
 function createNPC(x, y, hp)
 
-	npcBody = love.physics.newBody( world_layer0, x, y);
-	npcShape = love.physics.newRectangleShape(npcBody, 10, 18)
-	npcBody:setMassFromShapes();
+	npcBody = love.physics.newBody( world_layer0, x, y, 400);
+	npcShape = love.physics.newRectangleShape(npcBody, 20, 48)
+	--npcBody:setMassFromShapes();
 	nx,ny=npcBody:getWorldPoint(10,10); -- The mass it gets is probably too much
 
 	npcShape:setCategory(5);
@@ -112,12 +111,7 @@ end
 function npcDraw(i) 
 
 	if entityHitpoints[i] then
-		if npcWalkingDirection[i] == "left" then
-			love.graphics.draw(graphic_npcLeft, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
-		elseif npcWalkingDirection[i] == "right" then
-
-			love.graphics.draw(graphic_npcRight, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
-		end
+			love.graphics.draw(graphic_npc, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
 	else
 		love.graphics.draw(graphic_npcDead, entityBody[i]:getX(),entityBody[i]:getY(),entityBody[i]:getAngle());
 	end
@@ -133,15 +127,9 @@ function npcReceiveDmg(npcId, dmg)
 			entityHitpoints[npcId] = entityHitpoints[npcId] - dmg;
 			debugMsg("npc lost "..dmg.."hp");
 			if entityHitpoints[npcId] <= 0 then
-	
-				debugMsg("NPC"..npcId.." destroyed!");
 				
-				entityBody[npcId]:setSpin(1000);
 				entityShape[npcId]:setMask(4,5);
-
 				putSplat(entityBody[npcId]:getX(), entityBody[npcId]:getY())
-
-				-- entityHitpoints is set to false!!! THIS NEED TO BE KNOWN!!! Bad solution perhaps?
 				entityHitpoints[npcId] = false;
 	
 			end

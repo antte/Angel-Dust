@@ -9,6 +9,7 @@ function itemLoad()
 	graphic_itemSofa = love.graphics.newImage("images/itemSofa.png", love.image_optimize);
 	graphic_itemCrate = love.graphics.newImage("images/itemCrate1515.png", love.image_optimize);
 	graphic_itemBasketball = love.graphics.newImage("images/itemBasketball.png", love.image_optimize);
+	graphic_itemAnvil =  love.graphics.newImage("images/items/anvil.png", love.image_optimize);
 
 	itemGraphic = {}
 
@@ -20,15 +21,15 @@ end
 -- x and y sets position, 
 -- width and height the size of the item
 -- hp the "hitpoints"(health) it got
-function createBox(x, y, width, height, hp, graphic)
+function createBox(x, y, width, height, mass, hp, graphic)
 
-	boxBody = love.physics.newBody( world_layer0, x, y );
+	boxBody = love.physics.newBody( world_layer0, x, y, mass);
 	boxShape = love.physics.newRectangleShape(boxBody, width, height)
-	boxBody:setMassFromShapes();
+	--boxBody:setMassFromShapes();
 
 	boxShape:setCategory(4);
 	boxShape:setRestitution(0);
-	boxShape:setFriction(3);
+	boxShape:setFriction(2);
 	
 	addEntity(boxBody,boxShape,"item", hp);
 	boxId = idOfLastCreatedEntity();	
@@ -68,6 +69,9 @@ function itemDraw(i)
 		end	
 		if itemGraphic[i] == "basketball" then
 			love.graphics.draw(graphic_itemBasketball, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
+		end	
+		if itemGraphic[i] == "anvil" then
+			love.graphics.draw(graphic_itemAnvil, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
 		end	
 
 	end
@@ -120,10 +124,13 @@ function createTestItems()  -- used for testing purposes only
 
 	local test=40;
 	while test>0 do
-		if math.random(0,1) == 0 then
-			createBox(test*200,700,15,15,5000,"crate");
-		else
-			createBox(test*200,700,35,11,5000,"sofa");
+		local random=math.random(0,2);
+		if random == 0 then
+		--	createBox(test*200,700,15,15,100,5000,"crate");
+		elseif random == 1 then
+		--	createBox(test*200,700,35,11,200,5000,"sofa");
+		else 
+			createBox(test*200,700,45,30,500,5000,"anvil");
 		end
 		test=test-1;
 	end

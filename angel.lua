@@ -11,13 +11,13 @@ function angelLoad()
 	-- Should "world" be an argument in the function?
 
 	-- Create box2d shape and body for the character
-	characterBody = love.physics.newBody(world_layer0, 100, 700)
+	characterBody = love.physics.newBody(world_layer0, 100, 700, 400)
 	--characterShape = love.physics.newRectangleShape(characterBody, 100,190, 20,20)
-	characterShape = love.physics.newCircleShape(characterBody, 10);
+	characterShape = love.physics.newCircleShape(characterBody, 24);
 	characterShape:setData("character");
 	characterShape:setCategory(6);
 
-	characterBody:setMassFromShapes( );
+	--characterBody:setMassFromShapes( );
 	characterBody:setAngularDamping(10000)
 
 	-- Character variables
@@ -39,8 +39,10 @@ function angelLoad()
 	characterGrabTime = 0.5; -- How soon after contact a "grab" must be initiated to succeed
 	characterGlide = 24000; -- How much "glide" you get. Higher value = more glide. 
 
-	graphic_angel = love.graphics.newImage("images/angel.png", love.image_optimize);
-	graphic_angelFlapped = love.graphics.newImage("images/angelflapped.png", love.image_optimize);
+	graphic_angelIdle = love.graphics.newImage("images/character/idle.png", love.image_optimize);
+	graphic_angelFlap = love.graphics.newImage("images/character/flap.png", love.image_optimize);
+	graphic_angelHolding = love.graphics.newImage("images/character/holding.png", love.image_optimize);
+	graphic_angelHoldingFlap = love.graphics.newImage("images/character/holdingflap.png", love.image_optimize);
 
 	world_layer0:setCallback(collision);
 
@@ -50,9 +52,17 @@ function angelDraw()
 	
 	cx, cy = characterBody:getWorldCenter();
 	if characterFlapped then
-		love.graphics.draw(graphic_angelFlapped, cx, cy, 0);
+		if characterEntityBeingHeld then
+			love.graphics.draw(graphic_angelHoldingFlap, cx, cy, 0);
+		else
+			love.graphics.draw(graphic_angelFlap, cx, cy, 0);
+		end
 	else	
-		love.graphics.draw(graphic_angel, cx, cy, 0);
+		if characterEntityBeingHeld then
+			love.graphics.draw(graphic_angelHolding, cx, cy, 0);
+		else
+			love.graphics.draw(graphic_angelIdle, cx, cy, 0);
+		end
 	end
 end
 

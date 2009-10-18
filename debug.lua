@@ -29,7 +29,7 @@ end
 function debugDraw()
 
 	if showDebug == true then	
-		local text = love.timer.getFPS().."fps\n";
+		local text = love.timer.getFPS().." fps\n";
 
 		love.graphics.setColor( 0, 0, 0)
 
