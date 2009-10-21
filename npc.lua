@@ -15,7 +15,7 @@ function npcLoad()
 	-- Tweakable values
 	constNpcWalkingWait = 60; -- How long after collision with something direction is reversed and walking starts( not actuallty true though)
 	constNpcMaxWalkSpeed = 50; -- At what speed the npc's speed should be capped
-	constNpcMinWalkSpeed = 20; -- If the npc doesnt reach this speed - it turns around
+	constNpcMinWalkSpeed = 15; -- If the npc doesnt reach this speed - it turns around
 	constNpcRiseWait = 3; -- When NPC has fallen - how long in seconds should he lie before he rises
 	constNpcDmgAbsorb = 15; -- If damage dealt doesnt reach this minimum - no hitpoints are lost
 
@@ -81,15 +81,16 @@ end
 -- hp the "hitpoints"(health) it got
 function createNPC(x, y, hp)
 
-	npcBody = love.physics.newBody( world_layer0, x, y, 400);
-	npcShape = love.physics.newRectangleShape(npcBody, 20, 48)
+	npcBody = love.physics.newBody( world_layer0, x, y);
+	npcShape = love.physics.newRectangleShape(npcBody, 22, 48)
 	--npcBody:setMassFromShapes();
-	nx,ny=npcBody:getWorldPoint(10,10); -- The mass it gets is probably too much
+	nx,ny=npcBody:getLocalCenter(); -- The mass it gets is probably too much
+	npcBody:setMass( nx, ny, 100, 20000);
 
 	npcShape:setCategory(5);
-	npcShape:setMask(5);
-	npcBody:setAngularDamping(5);
-	npcShape:setFriction(0.4);
+	--npcShape:setMask(5);
+	npcBody:setAngularDamping(6);
+	npcShape:setFriction(0.3);
 
 	addEntity(npcBody,npcShape,"npc", hp);
 	local npcId = idOfLastCreatedEntity();	
@@ -128,7 +129,6 @@ function npcReceiveDmg(npcId, dmg)
 			debugMsg("npc lost "..dmg.."hp");
 			if entityHitpoints[npcId] <= 0 then
 				
-				entityShape[npcId]:setMask(4,5);
 				putSplat(entityBody[npcId]:getX(), entityBody[npcId]:getY())
 				entityHitpoints[npcId] = false;
 	
@@ -142,7 +142,7 @@ end
 function createTestNPC()  -- used for testing purposes only
 	math.randomseed(os.time());	
 	local i=0;
-	while i<30 do
+	while i<15 do
 		createNPC(math.random(0,8000),600,40);
 		i=i+1;
 	end

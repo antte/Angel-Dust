@@ -7,7 +7,7 @@
 function itemLoad()
 
 	graphic_itemSofa = love.graphics.newImage("images/itemSofa.png", love.image_optimize);
-	graphic_itemCrate = love.graphics.newImage("images/itemCrate1515.png", love.image_optimize);
+	graphic_itemCrate4848 = love.graphics.newImage("images/items/crate4848.png", love.image_optimize);
 	graphic_itemBasketball = love.graphics.newImage("images/itemBasketball.png", love.image_optimize);
 	graphic_itemAnvil =  love.graphics.newImage("images/items/anvil.png", love.image_optimize);
 
@@ -25,11 +25,13 @@ function createBox(x, y, width, height, mass, hp, graphic)
 
 	boxBody = love.physics.newBody( world_layer0, x, y, mass);
 	boxShape = love.physics.newRectangleShape(boxBody, width, height)
-	--boxBody:setMassFromShapes();
+	boxBody:setMassFromShapes();
+	bx,by= boxBody:getLocalCenter( );
+	boxBody:setMass(bx,by,mass,20000);
 
 	boxShape:setCategory(4);
 	boxShape:setRestitution(0);
-	boxShape:setFriction(2);
+	boxShape:setFriction(3);
 	
 	addEntity(boxBody,boxShape,"item", hp);
 	boxId = idOfLastCreatedEntity();	
@@ -61,8 +63,8 @@ function itemDraw(i)
 	-- Can't draw an item that has been destroyed(which it should have been if hitpoints drop below 1
 	if entityHitpoints[i] then	
 			
-		if itemGraphic[i] == "crate" then
-			love.graphics.draw(graphic_itemCrate, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
+		if itemGraphic[i] == "crate4848" then
+			love.graphics.draw(graphic_itemCrate4848, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
 		end
 		if itemGraphic[i] == "sofa" then
 			love.graphics.draw(graphic_itemSofa, entityBody[i]:getX(), entityBody[i]:getY(), entityBody[i]:getAngle());
@@ -126,7 +128,7 @@ function createTestItems()  -- used for testing purposes only
 	while test>0 do
 		local random=math.random(0,2);
 		if random == 0 then
-		--	createBox(test*200,700,15,15,100,5000,"crate");
+			createBox(test*200,700,48,48,100,5000,"crate4848");
 		elseif random == 1 then
 		--	createBox(test*200,700,35,11,200,5000,"sofa");
 		else 

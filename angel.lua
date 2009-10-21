@@ -12,6 +12,7 @@ function angelLoad()
 
 	-- Create box2d shape and body for the character
 	characterBody = love.physics.newBody(world_layer0, 100, 700, 400)
+	characterBody:setBullet(true);
 	--characterShape = love.physics.newRectangleShape(characterBody, 100,190, 20,20)
 	characterShape = love.physics.newCircleShape(characterBody, 24);
 	characterShape:setData("character");
@@ -190,11 +191,11 @@ function characterGrabEntity(id)
 	ix, iy = grabbedEntity:getWorldCenter() 
 
 	distancejoint = love.physics.newDistanceJoint(characterBody, entityBody[id], cx-8, cy, ix-8, iy)	
-	distancejoint:setLength(15);				
+	distancejoint:setLength(48);				
 	distancejoint:setDamping(0);
 
 	distancejoint2 = love.physics.newDistanceJoint(characterBody, entityBody[id], cx+8, cy, ix+8, iy)	
-	distancejoint2:setLength(15);
+	distancejoint2:setLength(48);
 	distancejoint2:setDamping(0);
 
 
